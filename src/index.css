@@ -1,0 +1,435 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 
+  Fonts:
+  Place files here:
+  src/assets/fonts/DINCond-Regular.woff2
+  src/assets/fonts/DINPro-Regular.woff2
+  src/assets/fonts/DINPro-Bold.woff2
+*/
+
+@font-face {
+  font-family: "DIN Condensed";
+  src: url("./assets/fonts/DINCond-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DIN Pro";
+  src: url("./assets/fonts/DINPro-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DIN Pro";
+  src: url("./assets/fonts/DINPro-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* =========================================================
+   GLOBAL THEME SYSTEM
+   One place color change = whole website update
+========================================================= */
+
+:root {
+  --font-heading: "DIN Condensed", Impact, "Arial Narrow", sans-serif;
+  --font-body: "DIN Pro", Inter, Arial, sans-serif;
+
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --color-cream: #f4f1eb;
+
+  --color-bg: #050505;
+  --color-surface: #101010;
+  --color-surface-soft: #171717;
+  --color-text: #ffffff;
+  --color-muted: #8d8d8d;
+
+  --color-primary: #d4af37;
+  --color-secondary: #8a6a2f;
+  --color-accent: #f7df9b;
+  --color-glow: rgba(212, 175, 55, 0.35);
+
+  --border-light: rgba(255, 255, 255, 0.14);
+  --border-dark: rgba(0, 0, 0, 0.12);
+
+  --header-height: 74px;
+  --announcement-height: 42px;
+  --container: 1680px;
+
+  --section-padding: clamp(72px, 8vw, 140px);
+  --page-padding-x: clamp(18px, 4vw, 72px);
+
+  --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* =========================================================
+   FRAGRANCE-WISE THEMES
+========================================================= */
+
+.theme-oud-amber {
+  --color-bg: #080604;
+  --color-surface: #17100a;
+  --color-surface-soft: #22150c;
+  --color-text: #fff8ea;
+  --color-muted: #b89c78;
+  --color-primary: #c3923e;
+  --color-secondary: #5d351d;
+  --color-accent: #ffcf78;
+  --color-glow: rgba(195, 146, 62, 0.36);
+}
+
+.theme-blue-dark {
+  --color-bg: #03070f;
+  --color-surface: #07111e;
+  --color-surface-soft: #0d1b2c;
+  --color-text: #f4f9ff;
+  --color-muted: #9fb4c8;
+  --color-primary: #5ca9ff;
+  --color-secondary: #183b63;
+  --color-accent: #d8ecff;
+  --color-glow: rgba(92, 169, 255, 0.36);
+}
+
+.theme-floral-gold {
+  --color-bg: #fff8f1;
+  --color-surface: #ffffff;
+  --color-surface-soft: #f9efe7;
+  --color-text: #17120e;
+  --color-muted: #8b7665;
+  --color-primary: #c99b45;
+  --color-secondary: #f3d5d8;
+  --color-accent: #b85f7a;
+  --color-glow: rgba(201, 155, 69, 0.25);
+}
+
+.theme-sweet-red {
+  --color-bg: #120305;
+  --color-surface: #22070b;
+  --color-surface-soft: #330c13;
+  --color-text: #fff4f2;
+  --color-muted: #c18a82;
+  --color-primary: #d92d42;
+  --color-secondary: #6d111e;
+  --color-accent: #ffd0b0;
+  --color-glow: rgba(217, 45, 66, 0.32);
+}
+
+.theme-fresh-green {
+  --color-bg: #05100c;
+  --color-surface: #0c1c15;
+  --color-surface-soft: #10271d;
+  --color-text: #f3fff8;
+  --color-muted: #9bb9aa;
+  --color-primary: #66c89a;
+  --color-secondary: #1d5f42;
+  --color-accent: #d9ffe7;
+  --color-glow: rgba(102, 200, 154, 0.3);
+}
+
+.theme-vanilla-cream {
+  --color-bg: #fbf1df;
+  --color-surface: #fffaf2;
+  --color-surface-soft: #f4dfbf;
+  --color-text: #1f160d;
+  --color-muted: #846d50;
+  --color-primary: #b98039;
+  --color-secondary: #e4c99e;
+  --color-accent: #7a3f1d;
+  --color-glow: rgba(185, 128, 57, 0.22);
+}
+
+/* =========================================================
+   BASE
+========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--color-bg);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+video {
+  max-width: 100%;
+  display: block;
+}
+
+::selection {
+  background: var(--color-primary);
+  color: var(--color-black);
+}
+
+/* =========================================================
+   TYPOGRAPHY
+========================================================= */
+
+.font-luxury-heading {
+  font-family: var(--font-heading);
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+  line-height: 0.92;
+}
+
+.font-luxury-body {
+  font-family: var(--font-body);
+}
+
+.heading-hero {
+  font-family: var(--font-heading);
+  font-size: clamp(48px, 8vw, 132px);
+  line-height: 0.86;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.heading-section {
+  font-family: var(--font-heading);
+  font-size: clamp(44px, 5vw, 86px);
+  line-height: 0.9;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+.heading-card {
+  font-family: var(--font-heading);
+  font-size: clamp(24px, 2.3vw, 42px);
+  line-height: 0.95;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   REUSABLE LAYOUT
+========================================================= */
+
+.site-container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--page-padding-x);
+}
+
+.section-padding {
+  padding-block: var(--section-padding);
+}
+
+.luxury-border {
+  border: 1px solid var(--border-light);
+}
+
+.luxury-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-heading);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 16px;
+}
+
+.luxury-link::after {
+  content: "";
+  width: 34px;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.35s var(--ease-luxury);
+}
+
+.luxury-link:hover::after {
+  width: 54px;
+}
+
+.luxury-btn {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  padding: 13px 24px 11px;
+  font-family: var(--font-heading);
+  font-size: 18px;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+  transition:
+    background 0.35s var(--ease-luxury),
+    color 0.35s var(--ease-luxury),
+    border-color 0.35s var(--ease-luxury),
+    transform 0.35s var(--ease-luxury);
+}
+
+.luxury-btn:hover {
+  background: var(--color-text);
+  color: var(--color-bg);
+  transform: translateY(-2px);
+}
+
+.luxury-btn-dark {
+  background: var(--color-black);
+  color: var(--color-white);
+  border-color: var(--color-black);
+}
+
+.luxury-btn-dark:hover {
+  background: var(--color-primary);
+  color: var(--color-black);
+  border-color: var(--color-primary);
+}
+
+.luxury-btn-light {
+  background: var(--color-white);
+  color: var(--color-black);
+  border-color: var(--color-white);
+}
+
+.luxury-btn-light:hover {
+  background: var(--color-primary);
+  color: var(--color-black);
+  border-color: var(--color-primary);
+}
+
+/* =========================================================
+   HEADER / MEGA MENU HELPERS
+========================================================= */
+
+.header-blur {
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(18px);
+}
+
+.header-white {
+  background: rgba(255, 255, 255, 0.96);
+  color: #000000;
+  backdrop-filter: blur(18px);
+}
+
+.mega-menu-shadow {
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.16);
+}
+
+/* =========================================================
+   PRODUCT CARD HELPERS
+========================================================= */
+
+.product-card-bg {
+  background:
+    radial-gradient(circle at 50% 45%, var(--color-glow), transparent 34%),
+    #f2f2f2;
+}
+
+.product-image-transition {
+  transition:
+    opacity 0.45s var(--ease-luxury),
+    transform 0.55s var(--ease-luxury),
+    filter 0.55s var(--ease-luxury);
+}
+
+.product-card:hover .product-main-image {
+  opacity: 0;
+  transform: scale(0.96);
+}
+
+.product-card:hover .product-hover-image {
+  opacity: 1;
+  transform: scale(1.03);
+}
+
+.product-card:hover .product-quick-actions {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =========================================================
+   VIDEO / MEDIA
+========================================================= */
+
+.media-overlay-dark {
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.78), transparent 54%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.35), transparent 55%);
+}
+
+.media-overlay-bottom {
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.74), transparent 58%);
+}
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333333;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 768px) {
+  :root {
+    --header-height: 66px;
+    --announcement-height: 38px;
+    --page-padding-x: 18px;
+  }
+
+  .heading-hero {
+    font-size: clamp(46px, 18vw, 78px);
+  }
+
+  .heading-section {
+    font-size: clamp(40px, 14vw, 64px);
+  }
+}
