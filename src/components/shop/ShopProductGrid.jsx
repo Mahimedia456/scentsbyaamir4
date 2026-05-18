@@ -4,10 +4,11 @@ export default function ShopProductGrid({ products = [], title = "Fragrances" })
   return (
     <section className="bg-white text-black">
       <div className="site-container py-12 md:py-16">
-        <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
-            <h2 className="heading-section">{title}</h2>
-            <p className="mt-3 text-black/55">
+            <h2 className="luxury-section-title">{title}</h2>
+
+            <p className="mt-3 text-[13px] leading-[20px] text-black/55">
               {products.length} fragrance{products.length === 1 ? "" : "s"} found
             </p>
           </div>
@@ -20,12 +21,11 @@ export default function ShopProductGrid({ products = [], title = "Fragrances" })
             ))}
           </div>
         ) : (
-          <div className="flex min-h-[360px] items-center justify-center border border-black/10 bg-black/[0.03] text-center">
+          <div className="flex min-h-[320px] items-center justify-center border border-black/10 bg-black/[0.03] text-center">
             <div>
-              <h3 className="font-heading text-[42px] uppercase tracking-wideLuxury">
-                No Fragrance Found
-              </h3>
-              <p className="mt-3 text-black/55">
+              <h3 className="luxury-section-title">No Fragrance Found</h3>
+
+              <p className="mt-3 text-[13px] leading-[20px] text-black/55">
                 Try changing category, mood or search keyword.
               </p>
             </div>

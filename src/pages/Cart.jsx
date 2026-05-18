@@ -25,21 +25,21 @@ export default function Cart() {
       <Header variant="white" />
 
       <section className="bg-white text-black">
-        <div className="site-container py-16 md:py-24">
-          <p className="mb-4 font-heading text-xl uppercase tracking-wideLuxury text-brand-primary">
+        <div className="site-container py-12 md:py-16">
+          <p className="mb-3 font-heading text-[13px] font-normal uppercase leading-[16px] tracking-[0.4px] text-brand-primary">
             Your Selection
           </p>
 
-          <h1 className="heading-section">Shopping Cart</h1>
+          <h1 className="luxury-section-title">Shopping Cart</h1>
 
-          <p className="mt-5 max-w-2xl text-base leading-8 text-black/60">
+          <p className="mt-4 max-w-2xl text-[13px] leading-[20px] text-black/60">
             Review your fragrance order before checkout.
           </p>
         </div>
       </section>
 
       <section className="bg-white text-black">
-        <div className="site-container grid gap-10 pb-16 lg:grid-cols-12 md:pb-24">
+        <div className="site-container grid gap-10 pb-14 lg:grid-cols-12 md:pb-20">
           <div className="lg:col-span-8">
             <div className="border border-black/10">
               {cartItems.map((item) => (
@@ -54,54 +54,52 @@ export default function Cart() {
                     <img
                       src={item.image}
                       alt={item.name}
-                      className="absolute inset-0 m-auto h-[82%] w-[82%] object-contain"
+                      className="absolute inset-0 h-full w-full object-cover"
                     />
                   </Link>
 
                   <div>
-                    <h2 className="font-heading text-[34px] uppercase leading-none tracking-wideLuxury">
-                      {item.name}
-                    </h2>
+                    <h2 className="product-card-title text-black">{item.name}</h2>
 
-                    <p className="mt-2 text-sm text-black/55">
+                    <p className="mt-2 product-card-desc text-black/55">
                       {item.inspiredBy}
                     </p>
 
-                    <p className="mt-3 text-sm uppercase tracking-[0.12em] text-black/45">
+                    <p className="mt-3 product-card-desc uppercase text-black/45">
                       Size: {item.size}
                     </p>
 
-                    <div className="mt-5 flex h-11 w-32 items-center border border-black/15">
+                    <div className="mt-5 flex h-10 w-28 items-center border border-black/15">
                       <button
                         type="button"
-                        className="grid h-full w-11 place-items-center transition hover:bg-black hover:text-white"
+                        className="grid h-full w-10 place-items-center transition hover:bg-black hover:text-white"
                       >
-                        <Minus size={16} />
+                        <Minus size={15} />
                       </button>
 
-                      <span className="flex-1 text-center font-heading text-[18px]">
+                      <span className="flex-1 text-center product-card-price">
                         {item.qty}
                       </span>
 
                       <button
                         type="button"
-                        className="grid h-full w-11 place-items-center transition hover:bg-black hover:text-white"
+                        className="grid h-full w-10 place-items-center transition hover:bg-black hover:text-white"
                       >
-                        <Plus size={16} />
+                        <Plus size={15} />
                       </button>
                     </div>
                   </div>
 
                   <div className="flex items-start justify-between gap-5 md:block md:text-right">
-                    <p className="font-heading text-[26px] uppercase tracking-wideLuxury">
+                    <p className="product-card-price text-black">
                       Rs. {(item.price * item.qty).toLocaleString()}
                     </p>
 
                     <button
                       type="button"
-                      className="mt-0 inline-flex items-center gap-2 text-sm uppercase tracking-[0.12em] text-black/45 transition hover:text-black md:mt-8"
+                      className="mt-0 inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.4px] text-black/45 transition hover:text-black md:mt-8"
                     >
-                      <Trash2 size={16} />
+                      <Trash2 size={15} />
                       Remove
                     </button>
                   </div>
@@ -115,12 +113,10 @@ export default function Cart() {
           </div>
 
           <aside className="lg:col-span-4">
-            <div className="sticky top-[calc(var(--header-height)+28px)] border border-black/10 bg-black/[0.03] p-6 md:p-8">
-              <h2 className="font-heading text-[44px] uppercase leading-none tracking-wideLuxury">
-                Order Summary
-              </h2>
+            <div className="sticky top-[calc(var(--header-height)+24px)] border border-black/10 bg-black/[0.03] p-6 md:p-8">
+              <h2 className="luxury-section-title">Order Summary</h2>
 
-              <div className="mt-8 space-y-4 border-b border-black/10 pb-6 text-sm text-black/65">
+              <div className="mt-7 space-y-4 border-b border-black/10 pb-6 text-[13px] leading-[20px] text-black/65">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
                   <span>Rs. {subtotal.toLocaleString()}</span>
@@ -138,10 +134,8 @@ export default function Cart() {
               </div>
 
               <div className="mt-6 flex items-center justify-between">
-                <span className="font-heading text-[24px] uppercase tracking-wideLuxury">
-                  Total
-                </span>
-                <span className="font-heading text-[32px] uppercase tracking-wideLuxury">
+                <span className="product-card-title">Total</span>
+                <span className="product-card-price">
                   Rs. {grandTotal.toLocaleString()}
                 </span>
               </div>
@@ -150,11 +144,11 @@ export default function Cart() {
                 to="/checkout"
                 className="luxury-btn-dark luxury-btn mt-8 w-full"
               >
-                <ShoppingBag size={18} />
+                <ShoppingBag size={16} />
                 Checkout
               </Link>
 
-              <p className="mt-5 text-center text-xs leading-5 text-black/45">
+              <p className="mt-5 text-center text-[12px] leading-[20px] text-black/45">
                 Delivery charges and discounts can be adjusted at checkout.
               </p>
             </div>

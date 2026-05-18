@@ -32,7 +32,8 @@ function productMatchesMood(product, mood) {
       text.includes("citrus") ||
       text.includes("grapefruit") ||
       text.includes("bergamot") ||
-      text.includes("aquatic")
+      text.includes("aquatic") ||
+      text.includes("marine")
     );
   }
 
@@ -42,7 +43,8 @@ function productMatchesMood(product, mood) {
       text.includes("vanilla") ||
       text.includes("coffee") ||
       text.includes("tonka") ||
-      text.includes("cacao")
+      text.includes("cacao") ||
+      text.includes("praline")
     );
   }
 
@@ -51,7 +53,8 @@ function productMatchesMood(product, mood) {
       text.includes("floral") ||
       text.includes("rose") ||
       text.includes("jasmine") ||
-      text.includes("ylang")
+      text.includes("ylang") ||
+      text.includes("peony")
     );
   }
 
@@ -97,9 +100,10 @@ export default function Shop() {
 
   const initialCategory = searchParams.get("category") || "all";
   const initialSort = searchParams.get("sort") || "featured";
+  const initialMood = searchParams.get("mood") || "all";
 
   const [category, setCategory] = useState(initialCategory);
-  const [mood, setMood] = useState("all");
+  const [mood, setMood] = useState(initialMood);
   const [sort, setSort] = useState(initialSort);
   const [search, setSearch] = useState("");
 
@@ -151,14 +155,14 @@ export default function Shop() {
         eyebrow="Customer Favorites"
         title="Top Selling"
         description="Best-loved perfumes with strong identity, long-lasting impression and premium inspired profiles."
-        products={topSellingProducts}
+        products={topSellingProducts.slice(0, 8)}
       />
 
       <ProductRail
         eyebrow="Fresh From The House"
         title="New Arrivals"
         description="Recently added fragrances created for modern scent lovers."
-        products={newArrivalProducts}
+        products={newArrivalProducts.slice(0, 8)}
       />
 
       <Footer />

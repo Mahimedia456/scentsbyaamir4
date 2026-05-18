@@ -13,41 +13,41 @@ export default function ProductNotes({ product }) {
 
   return (
     <section className={`bg-brand-bg text-brand-text theme-${product.theme}`}>
-      <div className="site-container section-padding">
-        <div className="mb-12 text-center">
-          <p className="mb-4 font-heading text-xl uppercase tracking-wideLuxury text-brand-primary">
+      <div className="site-container py-14 md:py-20">
+        <div className="mb-10 text-center">
+          <p className="mb-3 font-heading text-[13px] font-normal uppercase leading-[16px] tracking-[0.4px] text-brand-primary">
             Fragrance Pyramid
           </p>
 
-          <h2 className="heading-section">
+          <h2 className="luxury-section-title text-brand-text">
             Notes Of {product.name}
           </h2>
 
-          <p className="mx-auto mt-5 max-w-3xl text-base leading-8 text-brand-muted">
+          <p className="mx-auto mt-4 max-w-3xl text-[13px] leading-[20px] text-brand-muted">
             Every scent moves in stages: the first impression, the emotional
             heart and the final trail that stays on skin.
           </p>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-3">
+        <div className="grid gap-px md:grid-cols-3">
           {groups.map((group) => (
             <div
               key={group.key}
-              className="border border-white/15 bg-white/8 p-8 backdrop-blur"
+              className="border border-white/15 bg-white/8 p-7 backdrop-blur md:p-8"
             >
-              <h3 className="font-heading text-[42px] uppercase leading-none tracking-wideLuxury">
+              <h3 className="product-card-title text-brand-text">
                 {group.title}
               </h3>
 
-              <p className="mt-4 min-h-[52px] text-sm leading-6 text-brand-muted">
+              <p className="mt-4 min-h-[44px] text-[13px] leading-[20px] text-brand-muted">
                 {noteDescriptions[group.key]}
               </p>
 
-              <div className="mt-8 flex flex-wrap gap-3">
+              <div className="mt-7 flex flex-wrap gap-2">
                 {group.notes.map((note) => (
                   <span
                     key={note}
-                    className="border border-white/18 px-4 py-2 font-heading text-[17px] uppercase tracking-wideLuxury text-brand-text"
+                    className="border border-white/18 px-3 py-2 product-badge-text text-brand-text"
                   >
                     {note}
                   </span>

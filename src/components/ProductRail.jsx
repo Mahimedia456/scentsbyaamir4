@@ -7,31 +7,38 @@ export default function ProductRail({
   description,
   products = [],
   dark = false,
+  seeAllTo = "/shop",
 }) {
   return (
     <section className={dark ? "bg-black text-white" : "bg-white text-black"}>
-      <div className="site-container section-padding">
-        <div className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+      <div className="site-container py-12 md:py-16">
+        <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div>
             {eyebrow && (
-              <p className="mb-3 font-heading text-lg uppercase tracking-wideLuxury text-brand-primary">
+              <p
+                className={`mb-3 font-heading text-[13px] font-normal uppercase leading-[16px] tracking-[0.4px] ${
+                  dark ? "text-brand-primary" : "text-brand-primary"
+                }`}
+              >
                 {eyebrow}
               </p>
             )}
 
-            <h2 className="heading-section">
-              {title}
-            </h2>
+            <h2 className="luxury-section-title">{title}</h2>
 
             {description && (
-              <p className={`mt-5 max-w-2xl text-base leading-7 ${dark ? "text-white/65" : "text-black/60"}`}>
+              <p
+                className={`mt-3 max-w-2xl text-[13px] leading-[20px] ${
+                  dark ? "text-white/62" : "text-black/58"
+                }`}
+              >
                 {description}
               </p>
             )}
           </div>
 
           <Link
-            to="/shop"
+            to={seeAllTo}
             className={`luxury-link shrink-0 ${dark ? "text-white" : "text-black"}`}
           >
             See All

@@ -54,16 +54,14 @@ const unisex = [
 function ProductList({ title, items, category }) {
   return (
     <div>
-      <h3 className="mb-5 font-heading text-[18px] uppercase tracking-wideLuxury text-black">
-        {title}
-      </h3>
+      <h3 className="mega-title mb-4 text-black">{title}</h3>
 
-      <ul className="space-y-4">
+      <ul className="space-y-3">
         {items.map((item) => (
           <li key={item}>
             <Link
               to={`/shop?category=${category}`}
-              className="font-body text-[16px] tracking-[0.04em] text-black/55 transition hover:text-black"
+              className="mega-link text-black/55 transition hover:text-black"
             >
               {item}
             </Link>
@@ -73,7 +71,7 @@ function ProductList({ title, items, category }) {
         <li className="pt-1">
           <Link
             to={`/shop?category=${category}`}
-            className="font-heading text-[16px] uppercase tracking-wideLuxury text-black"
+            className="mega-title text-black"
           >
             &gt; See All
           </Link>
@@ -88,20 +86,18 @@ export default function MegaMenu({ open }) {
 
   return (
     <div className="mega-menu-shadow absolute left-0 top-full z-40 w-full border-t border-black/10 bg-white text-black">
-      <div className="site-container grid grid-cols-12 gap-10 py-10">
-        <div className="col-span-2 space-y-10">
+      <div className="site-container grid grid-cols-12 gap-8 py-7">
+        <div className="col-span-2 space-y-8">
           {leftColumn.map((group) => (
             <div key={group.title}>
-              <h3 className="mb-5 font-heading text-[18px] uppercase tracking-wideLuxury">
-                {group.title}
-              </h3>
+              <h3 className="mega-title mb-4 text-black">{group.title}</h3>
 
-              <ul className="space-y-4">
+              <ul className="space-y-3">
                 {group.links.map((link) => (
                   <li key={link.label}>
                     <Link
                       to={link.to}
-                      className="font-body text-[16px] tracking-[0.04em] text-black/55 transition hover:text-black"
+                      className="mega-link text-black/55 transition hover:text-black"
                     >
                       {link.label}
                     </Link>
@@ -128,19 +124,19 @@ export default function MegaMenu({ open }) {
           <ProductList title="Unisex / Oud" items={unisex} category="unisex" />
         </div>
 
-        <div className="col-span-4 grid grid-cols-2 gap-5">
+        <div className="col-span-4 grid grid-cols-2 gap-4">
           <Link
             to="/product/night-rider-bleu-de-chanel-inspired"
-            className="group relative min-h-[440px] overflow-hidden bg-black"
+            className="group relative min-h-[350px] overflow-hidden bg-black"
           >
             <img
               src="/images/categories/mega-men.png"
               alt="Night Rider"
-              className="h-full w-full object-cover opacity-95 transition duration-700 group-hover:scale-105"
+              className="h-full w-full object-cover opacity-95 transition duration-700 group-hover:scale-[1.035]"
             />
             <div className="media-overlay-bottom absolute inset-0" />
-            <div className="absolute bottom-6 left-6 right-6">
-              <p className="font-heading text-[22px] uppercase tracking-wideLuxury text-white">
+            <div className="absolute bottom-5 left-5 right-5 text-center">
+              <p className="mega-card-title text-white underline underline-offset-4">
                 New: Night Rider
               </p>
             </div>
@@ -148,16 +144,16 @@ export default function MegaMenu({ open }) {
 
           <Link
             to="/product/dark-seduction"
-            className="group relative min-h-[440px] overflow-hidden bg-black"
+            className="group relative min-h-[350px] overflow-hidden bg-black"
           >
             <img
               src="/images/categories/mega-women.png"
               alt="Dark Seduction"
-              className="h-full w-full object-cover opacity-95 transition duration-700 group-hover:scale-105"
+              className="h-full w-full object-cover opacity-95 transition duration-700 group-hover:scale-[1.035]"
             />
             <div className="media-overlay-bottom absolute inset-0" />
-            <div className="absolute bottom-6 left-6 right-6">
-              <p className="font-heading text-[22px] uppercase tracking-wideLuxury text-white">
+            <div className="absolute bottom-5 left-5 right-5 text-center">
+              <p className="mega-card-title text-white underline underline-offset-4">
                 New: Dark Seduction
               </p>
             </div>

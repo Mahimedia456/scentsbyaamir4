@@ -27,31 +27,29 @@ export default function Home() {
       />
 
       <section className="bg-white text-black">
-        <div className="site-container py-16 text-center md:py-24">
-          <h2 className="heading-section">
-            La Collection Scents
-          </h2>
+        <div className="site-container py-14 text-center md:py-20">
+          <h2 className="luxury-section-title">La Collection Scents</h2>
 
-          <p className="mx-auto mt-5 max-w-3xl text-base leading-8 text-black/65 md:text-lg">
+          <p className="mx-auto mt-4 max-w-3xl text-sm leading-7 text-black/62 md:text-base">
             In line with modern luxury fragrance culture, each scent draws its
             power from raw notes, lasting character and a memorable trail.
           </p>
 
-          <Link to="/shop" className="luxury-link mt-8 text-black">
+          <Link to="/shop" className="luxury-link mt-7 text-black">
             Explore Collection
           </Link>
         </div>
 
-        <div className="relative min-h-[520px] overflow-hidden bg-black md:min-h-[720px]">
+        <div className="relative min-h-[500px] overflow-hidden bg-black md:min-h-[680px]">
           <img
             src="/images/hero/collection-story.png"
             alt="Scents By Aamir Collection"
-            className="absolute inset-0 h-full w-full object-cover opacity-90"
+            className="absolute inset-0 h-full w-full object-cover opacity-95"
           />
 
-          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/10 to-transparent" />
 
-          <div className="site-container relative z-10 flex min-h-[520px] items-end justify-center pb-12 text-center text-white md:min-h-[720px] md:pb-16">
+          <div className="site-container relative z-10 flex min-h-[500px] items-end justify-center pb-10 text-center text-white md:min-h-[680px] md:pb-14">
             <Link to="/collection/luxury" className="luxury-btn-light luxury-btn">
               Discover La Collection
             </Link>
@@ -67,11 +65,11 @@ export default function Home() {
         eyebrow="Customer Favorites"
         title="Top Selling"
         description="The perfumes customers return to again and again — bold, lasting and made for everyday confidence."
-        products={topSellingProducts}
+        products={topSellingProducts.slice(0, 6)}
       />
 
       <section className="relative overflow-hidden bg-black text-white">
-        <div className="absolute inset-0 opacity-35">
+        <div className="absolute inset-0 opacity-34">
           <img
             src="/images/hero/dark-editorial.png"
             alt="Luxury fragrance editorial"
@@ -79,24 +77,24 @@ export default function Home() {
           />
         </div>
 
-        <div className="absolute inset-0 bg-black/65" />
+        <div className="absolute inset-0 bg-black/68" />
 
-        <div className="site-container relative z-10 grid min-h-[620px] items-center gap-12 py-20 md:grid-cols-2">
+        <div className="site-container relative z-10 grid min-h-[560px] items-center gap-10 py-16 md:grid-cols-2 md:py-20">
           <div>
-            <p className="mb-4 font-heading text-xl uppercase tracking-wideLuxury text-brand-primary">
+            <p className="mb-3 font-heading text-[15px] uppercase tracking-[0.16em] text-brand-primary">
               Signature Mood
             </p>
 
-            <h2 className="heading-section">
+            <h2 className="luxury-section-title">
               Choose Your Fragrance By Feeling
             </h2>
 
-            <p className="mt-6 max-w-xl text-base leading-8 text-white/70 md:text-lg">
+            <p className="mt-5 max-w-xl text-sm leading-7 text-white/68 md:text-base">
               Fresh for daytime. Oud for statement nights. Floral for elegance.
               Sweet amber for a deeper impression.
             </p>
 
-            <Link to="/scent-finder" className="luxury-link mt-8 text-white">
+            <Link to="/scent-finder" className="luxury-link mt-7 text-white">
               Start Scent Finder
             </Link>
           </div>
@@ -111,17 +109,15 @@ export default function Home() {
               <Link
                 key={title}
                 to={`/shop?mood=${title.toLowerCase()}`}
-                className="group border border-white/18 bg-white/8 p-7 backdrop-blur transition hover:border-brand-primary hover:bg-white/12"
+                className="group border border-white/18 bg-white/8 p-6 backdrop-blur transition hover:border-brand-primary hover:bg-white/12"
               >
-                <h3 className="font-heading text-[34px] uppercase tracking-wideLuxury">
+                <h3 className="font-heading text-[28px] uppercase tracking-[0.07em]">
                   {title}
                 </h3>
 
-                <p className="mt-3 text-sm leading-6 text-white/60">
-                  {text}
-                </p>
+                <p className="mt-3 text-xs leading-5 text-white/60">{text}</p>
 
-                <span className="mt-6 inline-block font-heading text-[16px] uppercase tracking-wideLuxury text-brand-primary">
+                <span className="mt-5 inline-block font-heading text-[13px] uppercase tracking-[0.14em] text-brand-primary">
                   Explore →
                 </span>
               </Link>
@@ -134,7 +130,7 @@ export default function Home() {
         eyebrow="Recently Added"
         title="New Arrivals"
         description="New fragrances added to the house — created for stronger identity, better performance and a luxury finish."
-        products={newArrivalProducts}
+        products={newArrivalProducts.slice(0, 6)}
       />
 
       <Footer />

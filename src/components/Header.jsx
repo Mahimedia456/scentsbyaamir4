@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Heart, Menu, Search, ShoppingBag, User, X } from "lucide-react";
 import TopAnnouncement from "./TopAnnouncement";
@@ -13,46 +13,67 @@ const navItems = [
   { label: "Women", to: "/collection/women" },
   { label: "Unisex", to: "/collection/unisex" },
   { label: "Tester Box", to: "/collection/testers" },
+  { label: "Scent Finder", to: "/scent-finder" },
+  { label: "About", to: "/about-us" },
+  { label: "Contact", to: "/contact-us" },
 ];
 
 export default function Header({ variant = "dark" }) {
   const [megaOpen, setMegaOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  const isWhite = variant === "white";
+  const forceWhite = variant === "white";
+  const isWhite = forceWhite || scrolled;
+  const isDark = !isWhite;
+
+  useEffect(() => {
+    function handleScroll() {
+      setScrolled(window.scrollY > 40);
+    }
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <>
       <TopAnnouncement />
 
       <header
-        className={`sticky top-0 z-50 border-b ${
+        className={`sticky top-0 z-50 border-b transition-colors duration-300 ${
           isWhite
-            ? "header-white border-black/10"
-            : "header-blur border-white/15 text-white"
+            ? "border-black/10 bg-white text-black"
+            : "border-white/10 bg-black text-white"
         }`}
         onMouseLeave={() => setMegaOpen(false)}
       >
-        <div className="site-container flex h-[var(--header-height)] items-center justify-between gap-6">
+        <div className="site-container flex h-[56px] items-center justify-between gap-6 md:h-[62px]">
           <Link to="/" className="flex shrink-0 items-center">
             <img
               src={logo}
               alt="Scents By Aamir"
-              className={`h-12 w-auto object-contain transition duration-300 md:h-14 ${
-                isWhite ? "" : "brightness-0 invert"
+              className={`h-[22px] w-auto object-contain transition duration-300 md:h-[26px] ${
+                isDark ? "brightness-0 invert" : ""
               }`}
             />
           </Link>
 
-          <nav className="hidden flex-1 items-center gap-9 lg:flex">
+          <nav className="hidden flex-1 items-center gap-[24px] xl:gap-[30px] lg:flex">
             {navItems.map((item) => (
               <Link
                 key={item.label}
                 to={item.to}
                 onMouseEnter={() => setMegaOpen(Boolean(item.hasMega))}
-                className="font-heading text-[17px] uppercase tracking-wideLuxury transition hover:text-brand-primary"
+                className="header-nav-link transition hover:text-brand-primary"
               >
                 {item.label}
+
+                {item.hasMega && megaOpen && (
+                  <span className="absolute -bottom-[22px] left-0 h-px w-full bg-current" />
+                )}
               </Link>
             ))}
           </nav>
@@ -63,7 +84,7 @@ export default function Header({ variant = "dark" }) {
               className="transition hover:text-brand-primary"
               aria-label="Search"
             >
-              <Search size={23} strokeWidth={1.7} />
+              <Search size={19} strokeWidth={1.45} />
             </button>
 
             <Link
@@ -71,7 +92,7 @@ export default function Header({ variant = "dark" }) {
               className="transition hover:text-brand-primary"
               aria-label="Account"
             >
-              <User size={23} strokeWidth={1.7} />
+              <User size={19} strokeWidth={1.45} />
             </Link>
 
             <Link
@@ -79,7 +100,7 @@ export default function Header({ variant = "dark" }) {
               className="transition hover:text-brand-primary"
               aria-label="Wishlist"
             >
-              <Heart size={23} strokeWidth={1.7} />
+              <Heart size={20} strokeWidth={1.45} />
             </Link>
 
             <Link
@@ -87,8 +108,8 @@ export default function Header({ variant = "dark" }) {
               className="relative transition hover:text-brand-primary"
               aria-label="Cart"
             >
-              <ShoppingBag size={23} strokeWidth={1.7} />
-              <span className="absolute -right-2 -top-2 grid h-4 w-4 place-items-center rounded-full bg-brand-primary text-[10px] font-bold text-black">
+              <ShoppingBag size={20} strokeWidth={1.45} />
+              <span className="absolute -right-2 -top-2 grid h-[15px] w-[15px] place-items-center rounded-full bg-brand-primary text-[9px] font-bold text-black">
                 0
               </span>
             </Link>
@@ -100,7 +121,7 @@ export default function Header({ variant = "dark" }) {
             onClick={() => setMobileOpen((value) => !value)}
             aria-label="Open menu"
           >
-            {mobileOpen ? <X size={26} /> : <Menu size={26} />}
+            {mobileOpen ? <X size={23} /> : <Menu size={23} />}
           </button>
         </div>
 
@@ -120,7 +141,7 @@ export default function Header({ variant = "dark" }) {
                   key={item.label}
                   to={item.to}
                   onClick={() => setMobileOpen(false)}
-                  className="font-heading text-2xl uppercase tracking-wideLuxury"
+                  className="header-nav-link"
                 >
                   {item.label}
                 </Link>
@@ -128,10 +149,10 @@ export default function Header({ variant = "dark" }) {
             </nav>
 
             <div className="mt-8 flex items-center gap-5">
-              <Search size={23} strokeWidth={1.7} />
-              <User size={23} strokeWidth={1.7} />
-              <Heart size={23} strokeWidth={1.7} />
-              <ShoppingBag size={23} strokeWidth={1.7} />
+              <Search size={20} strokeWidth={1.45} />
+              <User size={20} strokeWidth={1.45} />
+              <Heart size={20} strokeWidth={1.45} />
+              <ShoppingBag size={20} strokeWidth={1.45} />
             </div>
           </div>
         )}

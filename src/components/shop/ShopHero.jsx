@@ -47,30 +47,30 @@ export default function ShopHero({ type = "shop" }) {
   const data = heroContent[type] || heroContent.shop;
 
   return (
-    <section className="relative min-h-[620px] overflow-hidden bg-black text-white">
+    <section className="relative min-h-[460px] overflow-hidden bg-black text-white md:min-h-[560px]">
       <img
         src={data.image}
         alt={data.title}
-        className="absolute inset-0 h-full w-full object-cover opacity-85"
+        className="absolute inset-0 h-full w-full object-cover opacity-90"
       />
 
-      <div className="absolute inset-0 bg-black/40" />
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.86),rgba(0,0,0,0.18),rgba(0,0,0,0.58))]" />
-      <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(0,0,0,0.75),transparent_55%)]" />
+      <div className="absolute inset-0 bg-black/28" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.72),rgba(0,0,0,0.08)_52%,rgba(0,0,0,0.45))]" />
+      <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(0,0,0,0.70),transparent_52%)]" />
 
-      <div className="site-container relative z-10 flex min-h-[620px] items-end pb-16">
-        <div className="max-w-5xl">
-          <p className="mb-4 font-heading text-xl uppercase tracking-wideLuxury text-brand-primary md:text-2xl">
+      <div className="site-container relative z-10 flex min-h-[460px] items-end pb-12 md:min-h-[560px] md:pb-14">
+        <div className="max-w-[680px]">
+          <p className="mb-3 font-heading text-[13px] font-normal uppercase leading-[16px] tracking-[0.4px] text-brand-primary">
             {data.eyebrow}
           </p>
 
-          <h1 className="heading-hero">{data.title}</h1>
+          <h1 className="home-hero-title">{data.title}</h1>
 
-          <p className="mt-6 max-w-2xl text-base leading-8 text-white/74 md:text-xl">
+          <p className="mt-3 max-w-[460px] text-[13px] leading-[20px] tracking-[0.2px] text-white/76">
             {data.subtitle}
           </p>
 
-          <Link to="/shop" className="luxury-link mt-8 text-white">
+          <Link to="/shop" className="luxury-link mt-7 text-white">
             {data.cta}
           </Link>
         </div>

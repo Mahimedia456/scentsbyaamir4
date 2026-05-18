@@ -55,25 +55,25 @@ export default function CollectionShowcase({ type = "men" }) {
       <img
         src={data.image}
         alt={data.title}
-        className="absolute inset-0 h-full w-full object-cover opacity-45"
+        className="absolute inset-0 h-full w-full object-cover opacity-50"
       />
 
-      <div className="absolute inset-0 bg-black/70" />
+      <div className="absolute inset-0 bg-black/68" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_45%,var(--color-glow),transparent_38%)]" />
 
-      <div className="site-container relative z-10 grid min-h-[680px] items-center gap-12 py-20 lg:grid-cols-2">
+      <div className="site-container relative z-10 grid min-h-[560px] items-center gap-10 py-16 lg:grid-cols-2 md:py-20">
         <div>
-          <p className="mb-4 font-heading text-xl uppercase tracking-wideLuxury text-brand-primary">
+          <p className="mb-3 font-heading text-[13px] font-normal uppercase leading-[16px] tracking-[0.4px] text-brand-primary">
             {data.eyebrow}
           </p>
 
-          <h2 className="heading-section">{data.title}</h2>
+          <h2 className="luxury-section-title text-white">{data.title}</h2>
 
-          <p className="mt-6 max-w-xl text-base leading-8 text-white/70 md:text-lg">
+          <p className="mt-4 max-w-xl text-[13px] leading-[20px] text-white/68">
             {data.text}
           </p>
 
-          <Link to="/shop" className="luxury-link mt-8 text-white">
+          <Link to="/shop" className="luxury-link mt-7 text-white">
             View All Fragrances
           </Link>
         </div>
@@ -82,12 +82,13 @@ export default function CollectionShowcase({ type = "men" }) {
           {data.cards.map(([title, text]) => (
             <div
               key={title}
-              className="border border-white/15 bg-white/8 p-7 backdrop-blur"
+              className="border border-white/15 bg-white/8 p-6 backdrop-blur"
             >
-              <h3 className="font-heading text-[34px] uppercase tracking-wideLuxury">
-                {title}
-              </h3>
-              <p className="mt-3 text-sm leading-6 text-white/62">{text}</p>
+              <h3 className="product-card-title text-white">{title}</h3>
+
+              <p className="mt-3 text-[12px] leading-5 text-white/62">
+                {text}
+              </p>
             </div>
           ))}
         </div>

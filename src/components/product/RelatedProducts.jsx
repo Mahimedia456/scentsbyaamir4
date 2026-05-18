@@ -8,9 +8,11 @@ export default function RelatedProducts({ product }) {
       (item) =>
         item.category === product.category ||
         item.theme === product.theme ||
-        item.family?.split(" ")?.some((word) =>
-          product.family?.toLowerCase().includes(word.toLowerCase())
-        )
+        item.family
+          ?.split(" ")
+          ?.some((word) =>
+            product.family?.toLowerCase().includes(word.toLowerCase())
+          )
     )
     .slice(0, 4);
 
@@ -22,6 +24,7 @@ export default function RelatedProducts({ product }) {
       title="Related Fragrances"
       description="Explore perfumes with a similar mood, fragrance family or category."
       products={related.length ? related : fallback}
+      seeAllTo="/shop"
     />
   );
 }

@@ -40,6 +40,28 @@ const collectionMeta = {
   },
 };
 
+const categoryLinks = [
+  { label: "Men", to: "/collection/men", key: "men" },
+  { label: "Women", to: "/collection/women", key: "women" },
+  { label: "Unisex", to: "/collection/unisex", key: "unisex" },
+  { label: "Testers", to: "/collection/testers", key: "testers" },
+];
+
+const featureCards = [
+  {
+    title: "Long Lasting",
+    text: "Designed around strong fragrance profiles with memorable dry-downs.",
+  },
+  {
+    title: "Inspired Luxury",
+    text: "Premium inspired scents with a modern Scents By Aamir presentation.",
+  },
+  {
+    title: "Scent Identity",
+    text: "Each perfume has its own mood, color palette and fragrance story.",
+  },
+];
+
 function getCollectionProducts(type) {
   if (type === "testers") {
     return products.filter((product) => product.category === "tester");
@@ -64,30 +86,35 @@ export default function CollectionPage() {
       <ShopHero type={collection.type} />
 
       <section className="bg-white text-black">
-        <div className="site-container py-16 text-center md:py-24">
-          <p className="mb-4 font-heading text-xl uppercase tracking-wideLuxury text-brand-primary">
+        <div className="site-container py-12 text-center md:py-16">
+          <p className="mb-3 font-heading text-[13px] font-normal uppercase leading-[16px] tracking-[0.4px] text-brand-primary">
             Scents By Aamir
           </p>
 
-          <h1 className="heading-section">{collection.title}</h1>
+          <h1 className="luxury-section-title">{collection.title}</h1>
 
-          <p className="mx-auto mt-5 max-w-3xl text-base leading-8 text-black/60 md:text-lg">
+          <p className="mx-auto mt-4 max-w-3xl text-[13px] leading-[20px] text-black/60">
             {collection.description}
           </p>
 
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Link to="/collection/men" className="luxury-btn text-black">
-              Men
-            </Link>
-            <Link to="/collection/women" className="luxury-btn text-black">
-              Women
-            </Link>
-            <Link to="/collection/unisex" className="luxury-btn text-black">
-              Unisex
-            </Link>
-            <Link to="/collection/testers" className="luxury-btn text-black">
-              Testers
-            </Link>
+          <div className="mx-auto mt-8 flex max-w-[720px] flex-wrap justify-center gap-2 border-y border-black/10 py-4">
+            {categoryLinks.map((item) => {
+              const active = item.key === collection.type;
+
+              return (
+                <Link
+                  key={item.key}
+                  to={item.to}
+                  className={`inline-flex min-h-[34px] items-center justify-center border px-5 pt-[2px] font-heading text-[13px] font-normal uppercase leading-none tracking-[0.4px] transition ${
+                    active
+                      ? "border-black bg-black text-white"
+                      : "border-black/15 bg-white text-black hover:border-black"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -97,33 +124,21 @@ export default function CollectionPage() {
       <ShopProductGrid products={collectionProducts} title={collection.title} />
 
       <section className="bg-white text-black">
-        <div className="site-container grid gap-8 py-16 md:grid-cols-3 md:py-24">
-          <div className="border border-black/10 p-8">
-            <h3 className="font-heading text-[36px] uppercase tracking-wideLuxury">
-              Long Lasting
-            </h3>
-            <p className="mt-4 text-sm leading-7 text-black/58">
-              Designed around strong fragrance profiles with memorable dry-downs.
-            </p>
-          </div>
+        <div className="site-container grid gap-px py-12 md:grid-cols-3 md:py-16">
+          {featureCards.map((card) => (
+            <div
+              key={card.title}
+              className="border border-black/10 bg-white p-7 md:p-8"
+            >
+              <h3 className="product-card-title text-black">
+                {card.title}
+              </h3>
 
-          <div className="border border-black/10 p-8">
-            <h3 className="font-heading text-[36px] uppercase tracking-wideLuxury">
-              Inspired Luxury
-            </h3>
-            <p className="mt-4 text-sm leading-7 text-black/58">
-              Premium inspired scents with a modern Scents By Aamir presentation.
-            </p>
-          </div>
-
-          <div className="border border-black/10 p-8">
-            <h3 className="font-heading text-[36px] uppercase tracking-wideLuxury">
-              Scent Identity
-            </h3>
-            <p className="mt-4 text-sm leading-7 text-black/58">
-              Each perfume has its own mood, color palette and fragrance story.
-            </p>
-          </div>
+              <p className="mt-4 text-[13px] leading-[20px] text-black/58">
+                {card.text}
+              </p>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -133,7 +148,7 @@ export default function CollectionPage() {
         eyebrow="Most Loved"
         title="Top Selling"
         description="Explore customer favorites across the house."
-        products={topSellingProducts}
+        products={topSellingProducts.slice(0, 8)}
       />
 
       <Footer />

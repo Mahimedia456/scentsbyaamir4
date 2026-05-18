@@ -19,11 +19,9 @@ export default function ProductDetail() {
 
         <section className="site-container flex min-h-[70vh] items-center justify-center text-center">
           <div>
-            <h1 className="heading-section">
-              Product Not Found
-            </h1>
+            <h1 className="luxury-section-title">Product Not Found</h1>
 
-            <p className="mt-5 text-black/60">
+            <p className="mt-4 text-[13px] leading-[20px] text-black/60">
               This fragrance does not exist or the product link is incorrect.
             </p>
 
@@ -45,23 +43,23 @@ export default function ProductDetail() {
       <ProductDetailHero product={product} />
 
       <section className="bg-white text-black">
-        <div className="site-container grid gap-10 py-16 lg:grid-cols-12 lg:py-24">
+        <div className="site-container grid gap-10 py-12 lg:grid-cols-12 md:py-16">
           <div className="lg:col-span-7">
-            <div className={`theme-${product.theme} relative min-h-[760px] overflow-hidden bg-brand-bg`}>
+            <div className={`theme-${product.theme} relative min-h-[520px] overflow-hidden bg-brand-bg md:min-h-[680px]`}>
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,var(--color-glow),transparent_36%)]" />
 
               <img
                 src={product.image}
                 alt={product.name}
-                className="absolute inset-0 m-auto h-[78%] w-[78%] object-contain drop-shadow-[0_50px_90px_rgba(0,0,0,0.45)]"
+                className="absolute inset-0 h-full w-full object-cover"
               />
 
-              <div className="absolute bottom-7 left-7 right-7 border border-white/15 bg-white/8 p-6 text-white backdrop-blur">
-                <p className="font-heading text-[30px] uppercase tracking-wideLuxury">
+              <div className="absolute bottom-6 left-6 right-6 border border-white/15 bg-white/8 p-5 text-white backdrop-blur">
+                <p className="product-card-title text-white">
                   {product.family}
                 </p>
 
-                <p className="mt-2 text-sm leading-6 text-white/65">
+                <p className="mt-2 text-[13px] leading-[20px] text-white/65">
                   {product.notes?.top?.[0]} opening, {product.notes?.heart?.[0]} heart,
                   and {product.notes?.base?.[0]} base.
                 </p>
@@ -80,7 +78,7 @@ export default function ProductDetail() {
       <ProductStory product={product} />
 
       <section className={`bg-brand-bg text-brand-text theme-${product.theme}`}>
-        <div className="site-container grid gap-8 py-16 md:grid-cols-4 md:py-24">
+        <div className="site-container grid gap-px py-14 md:grid-cols-4 md:py-20">
           {[
             ["01", "Opening", product.notes?.top?.join(" / ")],
             ["02", "Heart", product.notes?.heart?.join(" / ")],
@@ -89,17 +87,17 @@ export default function ProductDetail() {
           ].map(([number, title, text]) => (
             <div
               key={title}
-              className="border border-white/15 bg-white/8 p-7 backdrop-blur"
+              className="border border-white/15 bg-white/8 p-6 backdrop-blur md:p-7"
             >
-              <p className="font-heading text-[22px] uppercase tracking-wideLuxury text-brand-primary">
+              <p className="product-card-title text-brand-primary">
                 {number}
               </p>
 
-              <h3 className="mt-5 font-heading text-[38px] uppercase leading-none tracking-wideLuxury">
+              <h3 className="mt-5 product-card-title text-brand-text">
                 {title}
               </h3>
 
-              <p className="mt-4 text-sm leading-6 text-brand-muted">
+              <p className="mt-4 text-[13px] leading-[20px] text-brand-muted">
                 {text}
               </p>
             </div>

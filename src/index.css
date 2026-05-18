@@ -2,16 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 
-  Fonts:
-  Place files here:
-  src/assets/fonts/DINCond-Regular.woff2
-  src/assets/fonts/DINPro-Regular.woff2
-  src/assets/fonts/DINPro-Bold.woff2
-*/
+/* =========================================================
+   FONT SETUP
+   Put fonts in:
+   src/assets/fonts/DINCond-Regular.woff2
+   src/assets/fonts/DINPro-Regular.woff2
+   src/assets/fonts/DINPro-Bold.woff2
+========================================================= */
 
 @font-face {
   font-family: "DIN Condensed";
+  src: url("./assets/fonts/DINCond-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Alias because some classes/reference use DINCond-Regular directly */
+@font-face {
+  font-family: "DINCond-Regular";
   src: url("./assets/fonts/DINCond-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
@@ -36,37 +45,36 @@
 
 /* =========================================================
    GLOBAL THEME SYSTEM
-   One place color change = whole website update
 ========================================================= */
 
 :root {
-  --font-heading: "DIN Condensed", Impact, "Arial Narrow", sans-serif;
+  --font-heading: "DIN Condensed", "DINCond-Regular", "Arial Narrow", sans-serif;
   --font-body: "DIN Pro", Inter, Arial, sans-serif;
 
   --color-black: #000000;
   --color-white: #ffffff;
-  --color-cream: #f4f1eb;
+  --color-cream: #f6f3ee;
 
   --color-bg: #050505;
   --color-surface: #101010;
   --color-surface-soft: #171717;
   --color-text: #ffffff;
-  --color-muted: #8d8d8d;
+  --color-muted: #8a8a8a;
 
   --color-primary: #d4af37;
   --color-secondary: #8a6a2f;
   --color-accent: #f7df9b;
-  --color-glow: rgba(212, 175, 55, 0.35);
+  --color-glow: rgba(212, 175, 55, 0.22);
 
   --border-light: rgba(255, 255, 255, 0.14);
   --border-dark: rgba(0, 0, 0, 0.12);
 
-  --header-height: 74px;
-  --announcement-height: 42px;
-  --container: 1680px;
+  --header-height: 62px;
+  --announcement-height: 36px;
+  --container: 1920px;
 
-  --section-padding: clamp(72px, 8vw, 140px);
-  --page-padding-x: clamp(18px, 4vw, 72px);
+  --section-padding: clamp(56px, 6vw, 104px);
+  --page-padding-x: clamp(20px, 3.2vw, 56px);
 
   --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -84,7 +92,7 @@
   --color-primary: #c3923e;
   --color-secondary: #5d351d;
   --color-accent: #ffcf78;
-  --color-glow: rgba(195, 146, 62, 0.36);
+  --color-glow: rgba(195, 146, 62, 0.24);
 }
 
 .theme-blue-dark {
@@ -96,7 +104,7 @@
   --color-primary: #5ca9ff;
   --color-secondary: #183b63;
   --color-accent: #d8ecff;
-  --color-glow: rgba(92, 169, 255, 0.36);
+  --color-glow: rgba(92, 169, 255, 0.22);
 }
 
 .theme-floral-gold {
@@ -108,7 +116,7 @@
   --color-primary: #c99b45;
   --color-secondary: #f3d5d8;
   --color-accent: #b85f7a;
-  --color-glow: rgba(201, 155, 69, 0.25);
+  --color-glow: rgba(201, 155, 69, 0.16);
 }
 
 .theme-sweet-red {
@@ -120,7 +128,7 @@
   --color-primary: #d92d42;
   --color-secondary: #6d111e;
   --color-accent: #ffd0b0;
-  --color-glow: rgba(217, 45, 66, 0.32);
+  --color-glow: rgba(217, 45, 66, 0.2);
 }
 
 .theme-fresh-green {
@@ -132,7 +140,7 @@
   --color-primary: #66c89a;
   --color-secondary: #1d5f42;
   --color-accent: #d9ffe7;
-  --color-glow: rgba(102, 200, 154, 0.3);
+  --color-glow: rgba(102, 200, 154, 0.2);
 }
 
 .theme-vanilla-cream {
@@ -144,7 +152,7 @@
   --color-primary: #b98039;
   --color-secondary: #e4c99e;
   --color-accent: #7a3f1d;
-  --color-glow: rgba(185, 128, 57, 0.22);
+  --color-glow: rgba(185, 128, 57, 0.14);
 }
 
 /* =========================================================
@@ -167,6 +175,9 @@ body {
   color: var(--color-text);
   font-family: var(--font-body);
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+  font-synthesis: none;
 }
 
 button,
@@ -200,11 +211,11 @@ video {
    TYPOGRAPHY
 ========================================================= */
 
-.font-luxury-heading {
+.font-luxury-heading,
+.font-heading {
   font-family: var(--font-heading);
-  letter-spacing: 0.035em;
-  text-transform: uppercase;
-  line-height: 0.92;
+  font-weight: 600;
+  font-synthesis: none;
 }
 
 .font-luxury-body {
@@ -213,26 +224,70 @@ video {
 
 .heading-hero {
   font-family: var(--font-heading);
-  font-size: clamp(48px, 8vw, 132px);
-  line-height: 0.86;
-  letter-spacing: 0.03em;
+  font-size: clamp(42px, 4.4vw, 76px);
+  font-weight: 600;
+  line-height: 0.9;
+  letter-spacing: 0.035em;
   text-transform: uppercase;
+  font-synthesis: none;
+}
+
+.home-hero-title {
+  margin-bottom: 16px;
+  font-family: "DINCond-Regular";
+  font-size: 37px;
+  font-weight: 400;
+  line-height: 86%;
+  text-transform: uppercase;
+  letter-spacing: -0.7px;
+  font-synthesis: none;
 }
 
 .heading-section {
   font-family: var(--font-heading);
-  font-size: clamp(44px, 5vw, 86px);
-  line-height: 0.9;
+  font-size: clamp(34px, 3.5vw, 58px);
+  font-weight: 400;
+  line-height: 0.92;
   letter-spacing: 0.035em;
   text-transform: uppercase;
+  font-synthesis: none;
 }
 
 .heading-card {
   font-family: var(--font-heading);
-  font-size: clamp(24px, 2.3vw, 42px);
+  font-size: clamp(20px, 1.5vw, 30px);
+  font-weight: 400;
   line-height: 0.95;
-  letter-spacing: 0.035em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
+  font-synthesis: none;
+}
+
+.luxury-section-title {
+  font-family: var(--font-heading);
+  font-size: clamp(22px, 2.4vw, 36px);
+  font-weight: 600;
+  line-height: 0.92;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-synthesis: none;
+}
+
+.luxury-mini-title {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-synthesis: none;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 400;
+  font-synthesis: none;
 }
 
 /* =========================================================
@@ -260,43 +315,48 @@ video {
   align-items: center;
   gap: 10px;
   font-family: var(--font-heading);
-  letter-spacing: 0.08em;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  font-size: 16px;
+  font-synthesis: none;
 }
 
 .luxury-link::after {
   content: "";
-  width: 34px;
+  width: 36px;
   height: 1px;
   background: currentColor;
   transition: width 0.35s var(--ease-luxury);
 }
 
 .luxury-link:hover::after {
-  width: 54px;
+  width: 56px;
 }
 
 .luxury-btn {
   display: inline-flex;
-  min-height: 48px;
+  min-height: 34px;
   align-items: center;
   justify-content: center;
   gap: 10px;
   border: 1px solid currentColor;
   background: transparent;
   color: inherit;
-  padding: 13px 24px 11px;
+  padding: 11px 20px 9px;
   font-family: var(--font-heading);
-  font-size: 18px;
-  letter-spacing: 0.08em;
+  font-size: 13px;
+  font-weight: 400;
   line-height: 1;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   transition:
     background 0.35s var(--ease-luxury),
     color 0.35s var(--ease-luxury),
     border-color 0.35s var(--ease-luxury),
     transform 0.35s var(--ease-luxury);
+  font-synthesis: none;
 }
 
 .luxury-btn:hover {
@@ -330,49 +390,204 @@ video {
 }
 
 /* =========================================================
-   HEADER / MEGA MENU HELPERS
+   HEADER / MEGA MENU
 ========================================================= */
 
-.header-blur {
-  background: rgba(0, 0, 0, 0.72);
-  backdrop-filter: blur(18px);
-}
-
+.header-blur,
 .header-white {
-  background: rgba(255, 255, 255, 0.96);
-  color: #000000;
-  backdrop-filter: blur(18px);
+  backdrop-filter: none;
 }
 
 .mega-menu-shadow {
   box-shadow: 0 40px 90px rgba(0, 0, 0, 0.16);
 }
 
+.header-nav-link {
+  position: relative;
+  display: block;
+  padding: 0;
+  font-family: "DINCond-Regular";
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 19px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  font-synthesis: none;
+}
+
+.header-announcement-text {
+  font-family: "DINCond-Regular";
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  font-synthesis: none;
+}
+
+.mega-title {
+  font-family: "DINCond-Regular";
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 19px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  font-synthesis: none;
+}
+
+.mega-link {
+  font-family: "DIN Pro", Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 19px;
+  letter-spacing: 0.4px;
+}
+
+.mega-card-title {
+  font-family: "DINCond-Regular";
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  font-synthesis: none;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.home-hero {
+  min-height: calc(100vh - var(--announcement-height) - var(--header-height));
+}
+
+.home-hero-image {
+  object-position: center center;
+}
+
+.home-hero-overlay {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.68) 0%,
+      rgba(0, 0, 0, 0.16) 44%,
+      rgba(0, 0, 0, 0.52) 100%
+    ),
+    linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.72) 0%,
+      rgba(0, 0, 0, 0.12) 46%,
+      rgba(0, 0, 0, 0.18) 100%
+    );
+}
+
+.home-hero-content {
+  padding-bottom: clamp(42px, 6vw, 78px);
+}
+
+/* =========================================================
+   PRODUCT CARD TYPOGRAPHY
+========================================================= */
+
+.product-card-title {
+  font-family: "DINCond-Regular";
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 19px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  font-synthesis: none;
+}
+
+.product-card-price {
+  font-family: "DINCond-Regular";
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 19px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  font-synthesis: none;
+}
+
+.product-card-desc {
+  font-family: "DIN Pro", Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 19px;
+  letter-spacing: 0.2px;
+}
+
+.product-badge-text {
+  font-family: "DIN Pro", Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.product-action-text {
+  font-family: "DINCond-Regular";
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-synthesis: none;
+}
+
 /* =========================================================
    PRODUCT CARD HELPERS
 ========================================================= */
 
+.product-card {
+  overflow: hidden;
+}
+
+.product-card-media {
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+  background: #f3f3f3;
+}
+
 .product-card-bg {
   background:
-    radial-gradient(circle at 50% 45%, var(--color-glow), transparent 34%),
-    #f2f2f2;
+    radial-gradient(circle at 50% 45%, var(--color-glow), transparent 30%),
+    #f3f3f3;
 }
 
 .product-image-transition {
   transition:
-    opacity 0.45s var(--ease-luxury),
-    transform 0.55s var(--ease-luxury),
-    filter 0.55s var(--ease-luxury);
+    opacity 0.5s var(--ease-luxury),
+    transform 0.6s var(--ease-luxury),
+    filter 0.6s var(--ease-luxury);
+}
+
+.product-main-image {
+  z-index: 5;
+  object-position: center;
+}
+
+.product-hover-image {
+  z-index: 6;
+  object-position: center;
 }
 
 .product-card:hover .product-main-image {
   opacity: 0;
-  transform: scale(0.96);
+  transform: scale(1.02);
 }
 
 .product-card:hover .product-hover-image {
   opacity: 1;
   transform: scale(1.03);
+}
+
+.product-hover-shade {
+  z-index: 10;
+  background:
+    linear-gradient(0deg, rgba(0, 0, 0, 0.13), transparent 48%),
+    radial-gradient(circle at 50% 42%, transparent, rgba(0, 0, 0, 0.07));
 }
 
 .product-card:hover .product-quick-actions {
@@ -386,12 +601,25 @@ video {
 
 .media-overlay-dark {
   background:
-    linear-gradient(90deg, rgba(0, 0, 0, 0.78), transparent 54%),
-    linear-gradient(0deg, rgba(0, 0, 0, 0.35), transparent 55%);
+    linear-gradient(90deg, rgba(0, 0, 0, 0.74), transparent 56%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.42), transparent 58%);
 }
 
 .media-overlay-bottom {
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.74), transparent 58%);
+}
+
+/* =========================================================
+   FORMS
+========================================================= */
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(0, 0, 0, 0.42);
+}
+
+select {
+  cursor: pointer;
 }
 
 /* =========================================================
@@ -418,18 +646,61 @@ video {
    RESPONSIVE
 ========================================================= */
 
+@media (max-width: 1024px) {
+  :root {
+    --container: 100%;
+    --page-padding-x: 22px;
+  }
+
+  .home-hero-title {
+    font-size: 34px;
+  }
+}
+
 @media (max-width: 768px) {
   :root {
-    --header-height: 66px;
-    --announcement-height: 38px;
+    --header-height: 56px;
+    --announcement-height: 32px;
     --page-padding-x: 18px;
+    --section-padding: 64px;
   }
 
   .heading-hero {
-    font-size: clamp(46px, 18vw, 78px);
+    font-size: clamp(42px, 13vw, 66px);
+  }
+
+  .home-hero-title {
+    font-size: 34px;
+    line-height: 86%;
+    letter-spacing: -0.5px;
   }
 
   .heading-section {
-    font-size: clamp(40px, 14vw, 64px);
+    font-size: clamp(34px, 10vw, 52px);
+  }
+
+  .luxury-section-title {
+    font-size: clamp(24px, 9vw, 36px);
+  }
+
+  .home-hero {
+    min-height: 680px;
+  }
+
+  .home-hero-content {
+    padding-bottom: 46px;
+  }
+
+  .luxury-link {
+    font-size: 13px;
+  }
+
+  .header-nav-link {
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .header-announcement-text {
+    font-size: 11px;
   }
 }

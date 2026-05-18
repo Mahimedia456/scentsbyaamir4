@@ -21,57 +21,59 @@ export default function ShopByUniverse() {
 
   return (
     <section className="bg-black text-white">
-      <div className="site-container section-padding">
-        <div className="mb-12 text-center">
-          <h2 className="heading-section">
+      <div className="site-container py-14 md:py-20">
+        <div className="mb-10 text-center">
+          <h2 className="font-heading text-[30px] uppercase leading-none tracking-[0.055em] text-white md:text-[44px]">
             Shop By Universe
           </h2>
 
-          <div className="mx-auto mt-10 flex max-w-4xl items-center justify-center border-b border-white/30">
+          <div className="mx-auto mt-10 flex max-w-[860px] items-center justify-center border-b border-white/35">
             {tabs.map((tab) => (
               <button
                 key={tab.key}
                 type="button"
                 onClick={() => setActive(tab.key)}
-                className={`relative flex-1 px-3 pb-5 font-heading text-[18px] uppercase tracking-wideLuxury transition ${
-                  active === tab.key ? "text-white" : "text-white/45"
+                className={`relative flex-1 px-3 pb-4 font-heading text-[12px] uppercase tracking-[0.08em] transition md:text-[15px] ${
+                  active === tab.key ? "text-white" : "text-white/42"
                 }`}
               >
                 {tab.label}
+
                 {active === tab.key && (
-                  <span className="absolute bottom-[-1px] left-0 h-[2px] w-full bg-white" />
+                  <span className="absolute bottom-[-1px] left-0 h-[1px] w-full bg-white" />
                 )}
               </button>
             ))}
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mx-auto grid max-w-[1580px] grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
           {categories.map((item) => (
             <Link
               key={item.id}
               to={item.link}
-              className="group relative min-h-[520px] overflow-hidden bg-brand-surface"
+              className="group relative min-h-[440px] overflow-hidden bg-[#111] md:min-h-[520px]"
             >
               <img
                 src={item.image}
                 alt={item.title}
-                className="absolute inset-0 h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-105 group-hover:opacity-100"
+                className="absolute inset-0 h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-[1.035] group-hover:opacity-100"
               />
 
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/15 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/86 via-black/10 to-transparent" />
 
-              <div className="absolute bottom-7 left-7 right-7">
-                <h3 className="font-heading text-[36px] uppercase leading-none tracking-wideLuxury">
+              <div className="absolute bottom-6 left-6 right-6">
+                <h3 className="font-heading text-[15px] uppercase leading-none tracking-[0.055em] text-white md:text-[15px]">
                   {item.title}
                 </h3>
 
-                <p className="mt-3 text-sm leading-6 text-white/70">
+                <p className="mt-3 max-w-[260px] text-[12px] leading-5 text-white/68">
                   {item.subtitle}
                 </p>
 
-                <span className="luxury-link mt-5 text-white">
+                <span className="mt-5 inline-flex items-center gap-3 font-heading text-[12px] uppercase tracking-[0.09em] text-white">
                   Explore
+                  <span className="h-px w-9 bg-white transition-all duration-300 group-hover:w-14" />
                 </span>
               </div>
             </Link>
