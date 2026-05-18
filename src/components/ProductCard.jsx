@@ -1,49 +1,63 @@
 import { Link } from "react-router-dom";
 import { Heart, ShoppingBag } from "lucide-react";
+import { adaptProductForTemplate } from "../utils/productAdapter";
+
+function formatPrice(value) {
+  const number = Number(value || 0);
+
+  if (!Number.isFinite(number) || number <= 0) {
+    return "Price On Request";
+  }
+
+  return `Rs. ${number.toLocaleString()}`;
+}
 
 export default function ProductCard({ product }) {
-  const sizes = product.sizes || ["30 ml", "50 ml", "100 ml"];
+  const item = adaptProductForTemplate(product);
+  const sizes = item.sizes || ["30 ml", "50 ml", "100 ml"];
 
   return (
-    <article className={`product-card group bg-white text-black theme-${product.theme}`}>
+    <article
+      className={`product-card group bg-white text-black theme-${item.theme}`}
+    >
       <div className="relative">
-        <Link to={`/product/${product.slug}`} className="block">
+        <Link to={`/product/${item.slug}`} className="block">
           <div className="product-card-media relative min-h-[430px] overflow-hidden bg-[#f3f3f3] md:min-h-[520px]">
             <div className="absolute left-5 top-5 z-20 flex flex-col items-start gap-2">
-              {product.badge && (
+              {item.badge ? (
                 <span className="bg-white px-3 py-1 product-badge-text text-black shadow-sm">
-                  {product.badge}
+                  {item.badge}
                 </span>
-              )}
+              ) : null}
 
-              {product.badge?.toLowerCase() !== "new" && (
+              {item.badge?.toLowerCase() !== "new" ? (
                 <span className="bg-white px-3 py-1 product-badge-text text-black shadow-sm">
                   New
                 </span>
-              )}
+              ) : null}
             </div>
 
             <img
-              src={product.image}
-              alt={product.name}
+              src={item.image}
+              alt={item.name}
               className="product-image-transition product-main-image absolute inset-0 h-full w-full object-cover"
+              loading="lazy"
             />
 
             <img
-              src={product.hoverImage || product.image}
-              alt={`${product.name} hover`}
+              src={item.hoverImage || item.image}
+              alt={`${item.name} hover`}
               className="product-image-transition product-hover-image absolute inset-0 h-full w-full object-cover opacity-0"
+              loading="lazy"
             />
 
             <div className="product-hover-shade absolute inset-0 opacity-0 transition duration-500 group-hover:opacity-100" />
 
             <div className="product-hover-details absolute inset-x-0 bottom-0 z-30 translate-y-6 bg-white px-5 py-5 opacity-0 transition duration-500 group-hover:translate-y-0 group-hover:opacity-100">
-              <h3 className="product-card-title text-black">
-                {product.name}
-              </h3>
+              <h3 className="product-card-title text-black">{item.name}</h3>
 
               <p className="mt-4 product-card-desc text-black/58">
-                {product.family || product.inspiredBy}
+                {item.family || item.inspiredBy}
               </p>
 
               <div className="mt-4 flex flex-wrap gap-4 product-card-desc text-black/58">
@@ -76,26 +90,26 @@ export default function ProductCard({ product }) {
         </Link>
 
         <div className="min-h-[104px] border-b border-black/10 bg-white px-5 py-5">
-          <Link to={`/product/${product.slug}`}>
+          <Link to={`/product/${item.slug}`}>
             <h3 className="product-card-title text-black transition group-hover:text-black/70">
-              {product.name}
+              {item.name}
             </h3>
           </Link>
 
           <p className="mt-2 min-h-[18px] product-card-desc text-black/50">
-            {product.inspiredBy}
+            {item.inspiredBy}
           </p>
 
           <div className="mt-3 flex items-center gap-3">
             <span className="product-card-price text-black">
-              Rs. {product.price?.toLocaleString()}
+              {formatPrice(item.price)}
             </span>
 
-            {product.oldPrice && (
+            {item.oldPrice ? (
               <span className="text-[12px] font-normal text-black/35 line-through">
-                Rs. {product.oldPrice.toLocaleString()}
+                {formatPrice(item.oldPrice)}
               </span>
-            )}
+            ) : null}
           </div>
         </div>
       </div>

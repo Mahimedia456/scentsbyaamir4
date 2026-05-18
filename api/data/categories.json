@@ -1,0 +1,74 @@
+[
+  {
+    "id": 156,
+    "name": "All Season Perfumes",
+    "slug": "all-season-perfumes",
+    "parent": 0,
+    "description": "",
+    "count": 4,
+    "image": "https://scentsbyaamir.com/wp-content/uploads/2025/05/all-season-fragrance.webp"
+  },
+  {
+    "id": 51,
+    "name": "Men's",
+    "slug": "mens-perfumes",
+    "parent": 0,
+    "description": "",
+    "count": 18,
+    "image": "https://scentsbyaamir.com/wp-content/uploads/2025/05/Man-Collection.webp"
+  },
+  {
+    "id": 154,
+    "name": "Summer Perfumes",
+    "slug": "summer-perfumes",
+    "parent": 0,
+    "description": "",
+    "count": 4,
+    "image": "https://scentsbyaamir.com/wp-content/uploads/2025/05/Summer-Fragrance.webp"
+  },
+  {
+    "id": 66,
+    "name": "Testers",
+    "slug": "perfume-testers",
+    "parent": 0,
+    "description": "",
+    "count": 3,
+    "image": "https://scentsbyaamir.com/wp-content/uploads/2025/05/Elegant-Perfume-Collection-with-Fiery-Flair.webp"
+  },
+  {
+    "id": 15,
+    "name": "Uncategorized",
+    "slug": "uncategorized",
+    "parent": 0,
+    "description": "",
+    "count": 0,
+    "image": null
+  },
+  {
+    "id": 65,
+    "name": "Unisex",
+    "slug": "unisex-perfumes",
+    "parent": 0,
+    "description": "",
+    "count": 11,
+    "image": "https://scentsbyaamir.com/wp-content/uploads/2025/05/Unisex-Collection.webp"
+  },
+  {
+    "id": 155,
+    "name": "Winter Perfumes",
+    "slug": "winter-perfumes",
+    "parent": 0,
+    "description": "",
+    "count": 4,
+    "image": "https://scentsbyaamir.com/wp-content/uploads/2025/05/Winter-Fragrance.webp"
+  },
+  {
+    "id": 56,
+    "name": "Women's",
+    "slug": "womens-perfumes",
+    "parent": 0,
+    "description": "",
+    "count": 16,
+    "image": "https://scentsbyaamir.com/wp-content/uploads/2025/05/Female-Collection.webp"
+  }
+]

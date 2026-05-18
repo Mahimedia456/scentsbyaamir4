@@ -1,0 +1,144 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import AccountHero from "../components/account/AccountHero";
+import AccountFormInput from "../components/account/AccountFormInput";
+
+export default function AccountRegister() {
+  const [form, setForm] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const [message, setMessage] = useState("");
+
+  function updateField(event) {
+    const { name, value } = event.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    if (form.password !== form.confirmPassword) {
+      setMessage("Passwords do not match.");
+      return;
+    }
+
+    setMessage("Register API will be connected after backend setup.");
+  }
+
+  return (
+    <main className="min-h-screen bg-brand-bg text-brand-text">
+      <Header variant="dark" />
+
+      <AccountHero
+        title="Create Account"
+        description="Create your Scents By Aamir account for faster checkout, order history and saved shipping details."
+      />
+
+      <section className="bg-white text-black">
+        <div className="site-container grid gap-10 py-12 md:py-16 lg:grid-cols-12">
+          <div className="lg:col-span-5">
+            <p className="font-heading text-[15px] uppercase tracking-[0.16em] text-brand-primary">
+              New Customer
+            </p>
+
+            <h2 className="luxury-section-title mt-3">Join The House</h2>
+
+            <p className="mt-4 max-w-md text-[14px] leading-7 text-black/60">
+              Save your details, track orders and keep your fragrance purchases
+              organized in one place.
+            </p>
+          </div>
+
+          <div className="lg:col-span-7">
+            <form
+              onSubmit={handleSubmit}
+              className="border border-black/10 bg-white p-6 md:p-8"
+            >
+              <div className="grid gap-5 md:grid-cols-2">
+                <AccountFormInput
+                  label="First Name"
+                  name="firstName"
+                  value={form.firstName}
+                  onChange={updateField}
+                  required
+                />
+
+                <AccountFormInput
+                  label="Last Name"
+                  name="lastName"
+                  value={form.lastName}
+                  onChange={updateField}
+                  required
+                />
+
+                <AccountFormInput
+                  label="Email Address"
+                  name="email"
+                  type="email"
+                  value={form.email}
+                  onChange={updateField}
+                  required
+                  autoComplete="email"
+                />
+
+                <AccountFormInput
+                  label="Phone"
+                  name="phone"
+                  value={form.phone}
+                  onChange={updateField}
+                  autoComplete="tel"
+                />
+
+                <AccountFormInput
+                  label="Password"
+                  name="password"
+                  type="password"
+                  value={form.password}
+                  onChange={updateField}
+                  required
+                  autoComplete="new-password"
+                />
+
+                <AccountFormInput
+                  label="Confirm Password"
+                  name="confirmPassword"
+                  type="password"
+                  value={form.confirmPassword}
+                  onChange={updateField}
+                  required
+                  autoComplete="new-password"
+                />
+              </div>
+
+              {message ? (
+                <p className="mt-5 border border-amber-700/20 bg-amber-50 px-4 py-3 text-[13px] text-amber-900">
+                  {message}
+                </p>
+              ) : null}
+
+              <div className="mt-7 flex flex-wrap items-center gap-5">
+                <button type="submit" className="luxury-btn luxury-btn-dark">
+                  Register
+                </button>
+
+                <Link to="/account/login" className="luxury-link text-black">
+                  Already Registered
+                </Link>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </main>
+  );
+}

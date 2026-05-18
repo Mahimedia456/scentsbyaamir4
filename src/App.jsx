@@ -10,6 +10,31 @@ import Checkout from "./pages/Checkout";
 import OrderReceived from "./pages/OrderReceived";
 import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
+import AccountLogin from "./pages/AccountLogin";
+import AccountRegister from "./pages/AccountRegister";
+import LostPassword from "./pages/LostPassword";
+import ResetPassword from "./pages/ResetPassword";
+import MyAccount from "./pages/MyAccount";
+import AccountOrders from "./pages/AccountOrders";
+import AccountOrderDetail from "./pages/AccountOrderDetail";
+import AccountAddresses from "./pages/AccountAddresses";
+import AccountDetails from "./pages/AccountDetails";
+import OrderTracking from "./pages/OrderTracking";
+import FAQ from "./pages/FAQ";
+import ReturnsExchanges from "./pages/ReturnsExchanges";
+import DeliveryReturn from "./pages/DeliveryReturn";
+import HowWeMakeIt from "./pages/HowWeMakeIt";
+import StoreLocations from "./pages/StoreLocations";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import ShippingPolicy from "./pages/ShippingPolicy";
+import TermsOfServices from "./pages/TermsOfServices";
+
+import SyncLogin from "./pages/SyncLogin";
+import SyncDashboard from "./pages/SyncDashboard";
+
+
+
+
 
 function PlaceholderPage({ title }) {
   return (
@@ -44,16 +69,29 @@ export default function App() {
       <Route path="/about-us" element={<AboutUs />} />
       <Route path="/contact-us" element={<ContactUs />} />
 
-      <Route path="/login" element={<PlaceholderPage title="Login" />} />
-      <Route path="/order-tracking" element={<PlaceholderPage title="Order Tracking" />} />
-      <Route path="/faq" element={<PlaceholderPage title="FAQ" />} />
-      <Route path="/returns-exchanges" element={<PlaceholderPage title="Returns & Exchanges" />} />
-      <Route path="/delivery-return" element={<PlaceholderPage title="Delivery Return" />} />
-      <Route path="/how-we-make-it" element={<PlaceholderPage title="How We Make It" />} />
-      <Route path="/store-locations" element={<PlaceholderPage title="Store Locations" />} />
-      <Route path="/privacy-policy" element={<PlaceholderPage title="Privacy Policy" />} />
-      <Route path="/shipping-policy" element={<PlaceholderPage title="Shipping Policy" />} />
-      <Route path="/terms-of-services" element={<PlaceholderPage title="Terms Of Services" />} />
+      <Route path="/account/login" element={<AccountLogin />} />
+<Route path="/account/register" element={<AccountRegister />} />
+<Route path="/account/lost-password" element={<LostPassword />} />
+<Route path="/account/reset-password" element={<ResetPassword />} />
+
+<Route path="/account" element={<MyAccount />} />
+<Route path="/account/orders" element={<AccountOrders />} />
+<Route path="/account/orders/:orderId" element={<AccountOrderDetail />} />
+<Route path="/account/addresses" element={<AccountAddresses />} />
+<Route path="/account/details" element={<AccountDetails />} />
+
+  <Route path="/order-tracking" element={<OrderTracking />} />
+<Route path="/faq" element={<FAQ />} />
+<Route path="/returns-exchanges" element={<ReturnsExchanges />} />
+<Route path="/delivery-return" element={<DeliveryReturn />} />
+<Route path="/how-we-make-it" element={<HowWeMakeIt />} />
+<Route path="/store-locations" element={<StoreLocations />} />
+<Route path="/privacy-policy" element={<PrivacyPolicy />} />
+<Route path="/shipping-policy" element={<ShippingPolicy />} />
+<Route path="/terms-of-services" element={<TermsOfServices />} />
+<Route path="/sync-login" element={<SyncLogin />} />
+<Route path="/sync-dashboard" element={<SyncDashboard />} />
+
 
       <Route path="*" element={<PlaceholderPage title="Page Not Found" />} />
     </Routes>

@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -7,7 +7,9 @@ import ShopProductGrid from "../components/shop/ShopProductGrid";
 import CollectionShowcase from "../components/shop/CollectionShowcase";
 import CategoryUniverseBanner from "../components/shop/CategoryUniverseBanner";
 import ProductRail from "../components/ProductRail";
-import { products, topSellingProducts } from "../data/product";
+import { products as localProducts, topSellingProducts } from "../data/product";
+import { fetchWooProducts } from "../services/wooService";
+import { adaptProductsForTemplate } from "../utils/productAdapter";
 
 const collectionMeta = {
   men: {
@@ -62,23 +64,65 @@ const featureCards = [
   },
 ];
 
-function getCollectionProducts(type) {
+function getCollectionProducts(items, type) {
   if (type === "testers") {
-    return products.filter((product) => product.category === "tester");
+    return items.filter((product) => product.category === "tester");
   }
 
-  return products.filter((product) => product.category === type);
+  return items.filter((product) => product.category === type);
 }
 
 export default function CollectionPage() {
   const { slug } = useParams();
   const collection = collectionMeta[slug] || collectionMeta.men;
 
-  const collectionProducts = useMemo(
-    () => getCollectionProducts(collection.type),
-    [collection.type]
+  const [wooProducts, setWooProducts] = useState([]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadProducts() {
+      try {
+        const response = await fetchWooProducts({
+          per_page: 100,
+          orderby: "date",
+          order: "desc",
+        });
+
+        if (!isMounted) return;
+
+        setWooProducts(adaptProductsForTemplate(response.products || []));
+      } catch (error) {
+        console.error("[CollectionPage] WooCommerce fallback:", error);
+        if (isMounted) setWooProducts([]);
+      }
+    }
+
+    loadProducts();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const allProducts = useMemo(
+    () =>
+      wooProducts.length
+        ? wooProducts
+        : adaptProductsForTemplate(localProducts),
+    [wooProducts]
   );
 
+  const collectionProducts = useMemo(
+    () => getCollectionProducts(allProducts, collection.type),
+    [allProducts, collection.type]
+  );
+
+const railProducts = wooProducts.length
+  ? [...allProducts]
+      .sort((a, b) => Number(b.totalSales || 0) - Number(a.totalSales || 0))
+      .slice(0, 8)
+  : topSellingProducts.slice(0, 8);
   return (
     <main className={`min-h-screen bg-white text-black ${collection.themeClass}`}>
       <Header variant="white" />
@@ -121,7 +165,10 @@ export default function CollectionPage() {
 
       <CollectionShowcase type={collection.type} />
 
-      <ShopProductGrid products={collectionProducts} title={collection.title} />
+      <ShopProductGrid
+        products={collectionProducts}
+        title={collection.title}
+      />
 
       <section className="bg-white text-black">
         <div className="site-container grid gap-px py-12 md:grid-cols-3 md:py-16">
@@ -130,9 +177,7 @@ export default function CollectionPage() {
               key={card.title}
               className="border border-black/10 bg-white p-7 md:p-8"
             >
-              <h3 className="product-card-title text-black">
-                {card.title}
-              </h3>
+              <h3 className="product-card-title text-black">{card.title}</h3>
 
               <p className="mt-4 text-[13px] leading-[20px] text-black/58">
                 {card.text}
@@ -148,7 +193,7 @@ export default function CollectionPage() {
         eyebrow="Most Loved"
         title="Top Selling"
         description="Explore customer favorites across the house."
-        products={topSellingProducts.slice(0, 8)}
+        products={railProducts}
       />
 
       <Footer />

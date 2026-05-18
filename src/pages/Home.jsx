@@ -1,3 +1,5 @@
+import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import HeroSlider from "../components/HeroSlider";
 import ProductRail from "../components/ProductRail";
@@ -7,12 +9,57 @@ import Footer from "../components/Footer";
 import { heroSlides } from "../data/banners";
 import {
   newArrivalProducts,
-  products,
+  products as localProducts,
   topSellingProducts,
 } from "../data/product";
-import { Link } from "react-router-dom";
+import { fetchWooProducts } from "../services/wooService";
+import { adaptProductsForTemplate } from "../utils/productAdapter";
 
 export default function Home() {
+  const [wooProducts, setWooProducts] = useState([]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadProducts() {
+      try {
+        const response = await fetchWooProducts({
+          per_page: 24,
+          orderby: "date",
+          order: "desc",
+        });
+
+        if (!isMounted) return;
+
+        setWooProducts(adaptProductsForTemplate(response.products || []));
+      } catch (error) {
+        console.error("[Home] WooCommerce fallback:", error);
+        if (isMounted) setWooProducts([]);
+      }
+    }
+
+    loadProducts();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const products = useMemo(
+    () => (wooProducts.length ? wooProducts : adaptProductsForTemplate(localProducts)),
+    [wooProducts]
+  );
+
+const homeTopSelling = wooProducts.length
+  ? [...products]
+      .sort((a, b) => Number(b.totalSales || 0) - Number(a.totalSales || 0))
+      .slice(0, 6)
+  : topSellingProducts.slice(0, 6);
+  
+  const homeNewArrivals = wooProducts.length
+    ? products.slice(0, 6)
+    : newArrivalProducts.slice(0, 6);
+
   return (
     <main className="min-h-screen bg-brand-bg text-brand-text">
       <Header variant="dark" />
@@ -65,7 +112,7 @@ export default function Home() {
         eyebrow="Customer Favorites"
         title="Top Selling"
         description="The perfumes customers return to again and again — bold, lasting and made for everyday confidence."
-        products={topSellingProducts.slice(0, 6)}
+        products={homeTopSelling}
       />
 
       <section className="relative overflow-hidden bg-black text-white">
@@ -130,7 +177,7 @@ export default function Home() {
         eyebrow="Recently Added"
         title="New Arrivals"
         description="New fragrances added to the house — created for stronger identity, better performance and a luxury finish."
-        products={newArrivalProducts.slice(0, 6)}
+        products={homeNewArrivals}
       />
 
       <Footer />

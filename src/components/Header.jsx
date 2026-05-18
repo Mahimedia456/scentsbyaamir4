@@ -88,7 +88,7 @@ export default function Header({ variant = "dark" }) {
             </button>
 
             <Link
-              to="/login"
+              to="account/login"
               className="transition hover:text-brand-primary"
               aria-label="Account"
             >
