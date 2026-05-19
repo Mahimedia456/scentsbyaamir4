@@ -25,30 +25,84 @@ const leftColumn = [
 ];
 
 const men = [
-  "Vauren",
-  "Elyndor",
-  "Night Rider",
-  "Royal Noxis",
-  "Ocean Spirit",
-  "Bold Heat",
+  {
+    label: "Vauren",
+    slug: "vauren-inspired-by-ysl-tuxedo-spicy-amber-luxury-mens-perfume",
+  },
+  {
+    label: "Elyndor",
+    slug: "elyndor-inspired-by-roja-elysium-fresh-luxury-mens-perfume",
+  },
+  {
+    label: "Night Rider",
+    slug: "night-rider-bleu-de-chanel-inspired",
+  },
+  {
+    label: "Royal Noxis",
+    slug: "royal-noxis-inspired-by-clive-christian-1872-luxury-mens-perfume",
+  },
+  {
+    label: "Ocean Spirit",
+    slug: "ocean-spirit-inspired-by-acqua-di-gio",
+  },
+  {
+    label: "Bold Heat",
+    slug: "bold-heat-office-for-men-inspired",
+  },
 ];
 
 const women = [
-  "Delure",
-  "Amerel",
-  "Dark Seduction",
-  "Blossom Shine",
-  "Floral Charm",
-  "Le Reve Dore",
+  {
+    label: "Delure",
+    slug: "delure-inspired-by-good-girl-sweet-seductive-womens-perfume",
+  },
+  {
+    label: "Amerel",
+    slug: "amerel-inspired-by-dior-jadore-elegant-womens-floral-perfume",
+  },
+  {
+    label: "Dark Seduction",
+    slug: "dark-seduction",
+  },
+  {
+    label: "Blossom Shine",
+    slug: "blossom-shine",
+  },
+  {
+    label: "Floral Charm",
+    slug: "floral-charm-scentsbyaamir",
+  },
+  {
+    label: "Le Reve Dore",
+    slug: "le-reve-dore-inspired-by-la-vie-est-belle-premium-womens-sweet-perfume",
+  },
 ];
 
 const unisex = [
-  "Desert Soul",
-  "Dark Aure",
-  "Cherelle",
-  "Kavian",
-  "Hivalta",
-  "Silver Breeze",
+  {
+    label: "Desert Soul",
+    slug: "desert-soul-inspired-by-ombre-nomade-dark-oud-unisex-perfume",
+  },
+  {
+    label: "Cherelle",
+    slug: "cherelle-inspired-by-dior-oud-ispahan-luxury-unisex-perfume",
+  },
+  {
+    label: "Kavian",
+    slug: "kavian-inspired-by-al-haitham-premium-arabic-unisex-perfume",
+  },
+  {
+    label: "Hivalta",
+    slug: "hivalta-inspired-by-nishane-hacivat-premium-unisex-perfume",
+  },
+  {
+    label: "Silver Breeze",
+    slug: "silver-breeze-inspired-by-creed-silver-mountain-water-fresh-unisex-perfume",
+  },
+  {
+    label: "Aventus Spirit",
+    slug: "aventus-spirit-inspired-by-creed-aventus",
+  },
 ];
 
 function ProductList({ title, items, category }) {
@@ -58,12 +112,12 @@ function ProductList({ title, items, category }) {
 
       <ul className="space-y-3">
         {items.map((item) => (
-          <li key={item}>
+          <li key={item.slug}>
             <Link
-              to={`/shop?category=${category}`}
+              to={`/product/${item.slug}`}
               className="mega-link text-black/55 transition hover:text-black"
             >
-              {item}
+              {item.label}
             </Link>
           </li>
         ))}
@@ -134,7 +188,9 @@ export default function MegaMenu({ open }) {
               alt="Night Rider"
               className="h-full w-full object-cover opacity-95 transition duration-700 group-hover:scale-[1.035]"
             />
+
             <div className="media-overlay-bottom absolute inset-0" />
+
             <div className="absolute bottom-5 left-5 right-5 text-center">
               <p className="mega-card-title text-white underline underline-offset-4">
                 New: Night Rider
@@ -151,7 +207,9 @@ export default function MegaMenu({ open }) {
               alt="Dark Seduction"
               className="h-full w-full object-cover opacity-95 transition duration-700 group-hover:scale-[1.035]"
             />
+
             <div className="media-overlay-bottom absolute inset-0" />
+
             <div className="absolute bottom-5 left-5 right-5 text-center">
               <p className="mega-card-title text-white underline underline-offset-4">
                 New: Dark Seduction
