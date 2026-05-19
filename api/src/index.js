@@ -71,7 +71,11 @@ app.use((error, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`Scents By Aamir API running on http://localhost:${PORT}`);
-  console.log(`Allowed origins: ${allowedOrigins.join(", ")}`);
-});
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => {
+    console.log(`Scents By Aamir API running on http://localhost:${PORT}`);
+    console.log(`Allowed origins: ${allowedOrigins.join(", ")}`);
+  });
+}
+
+export default app;
