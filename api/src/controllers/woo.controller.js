@@ -1,10 +1,18 @@
 import {
-  normalizeWooCategory,
   normalizeWooOrder,
   normalizeWooProduct,
   wooClient,
 } from "../config/woocommerce.js";
-import { cacheFiles, readJsonCache } from "../utils/localCache.js";
+import { blobPaths, readBlobJson } from "../utils/blobCache.js";
+
+const memoryCache = {
+  products: [],
+  categories: [],
+  productsSavedAt: 0,
+  categoriesSavedAt: 0,
+};
+
+const MEMORY_TTL = 1000 * 60 * 10;
 
 function getPagination(req) {
   const page = Number(req.query.page || 1);
@@ -22,6 +30,20 @@ function getWooError(error) {
     status: error?.response?.status || 500,
     data: error?.response?.data || null,
     message: error?.response?.data?.message || error.message || "API error",
+  };
+}
+
+function paginate(data, req) {
+  const page = Number(req.query.page || 1);
+  const perPage = Number(req.query.per_page || req.query.limit || 100);
+  const start = (page - 1) * perPage;
+
+  return {
+    page,
+    per_page: perPage,
+    total: data.length,
+    totalPages: Math.ceil(data.length / perPage),
+    data: data.slice(start, start + perPage),
   };
 }
 
@@ -56,7 +78,31 @@ function productMatchesCategory(product, categoryValue) {
   );
 }
 
-function sortCachedProducts(data, req) {
+function filterAndSortProducts(products, req) {
+  let data = [...products];
+
+  if (req.query.search) {
+    data = data.filter((product) =>
+      productMatchesSearch(product, req.query.search)
+    );
+  }
+
+  if (req.query.category) {
+    data = data.filter((product) =>
+      productMatchesCategory(product, req.query.category)
+    );
+  }
+
+  if (req.query.featured !== undefined) {
+    const featured = req.query.featured === "true";
+    data = data.filter((product) => Boolean(product.featured) === featured);
+  }
+
+  if (req.query.on_sale !== undefined) {
+    const onSale = req.query.on_sale === "true";
+    data = data.filter((product) => Boolean(product.onSale) === onSale);
+  }
+
   const orderby = String(req.query.orderby || "").toLowerCase();
 
   if (
@@ -86,6 +132,97 @@ function sortCachedProducts(data, req) {
   return data;
 }
 
+async function fetchAllWooProductsLive() {
+  const allProducts = [];
+  let page = 1;
+  let totalPages = 1;
+
+  do {
+    const response = await wooClient.get("/products", {
+      params: {
+        status: "publish",
+        per_page: 100,
+        page,
+        orderby: "date",
+        order: "desc",
+      },
+    });
+
+    const products = response.data || [];
+    totalPages = Number(response.headers["x-wp-totalpages"] || 1);
+
+    allProducts.push(...products.map(normalizeWooProduct));
+    page += 1;
+  } while (page <= totalPages);
+
+  memoryCache.products = allProducts;
+  memoryCache.productsSavedAt = Date.now();
+
+  return allProducts;
+}
+
+async function getProductSource() {
+  const memoryFresh =
+    memoryCache.products.length > 0 &&
+    Date.now() - memoryCache.productsSavedAt < MEMORY_TTL;
+
+  if (memoryFresh) {
+    return {
+      source: "memory-cache",
+      products: memoryCache.products,
+    };
+  }
+
+  const blobProducts = await readBlobJson(blobPaths.products, []);
+
+  if (Array.isArray(blobProducts) && blobProducts.length > 0) {
+    memoryCache.products = blobProducts;
+    memoryCache.productsSavedAt = Date.now();
+
+    return {
+      source: "vercel-blob",
+      products: blobProducts,
+    };
+  }
+
+  const liveProducts = await fetchAllWooProductsLive();
+
+  return {
+    source: "woocommerce-live-fallback",
+    products: liveProducts,
+  };
+}
+
+async function getCategorySource() {
+  const memoryFresh =
+    memoryCache.categories.length > 0 &&
+    Date.now() - memoryCache.categoriesSavedAt < MEMORY_TTL;
+
+  if (memoryFresh) {
+    return {
+      source: "memory-cache",
+      categories: memoryCache.categories,
+    };
+  }
+
+  const blobCategories = await readBlobJson(blobPaths.categories, []);
+
+  if (Array.isArray(blobCategories) && blobCategories.length > 0) {
+    memoryCache.categories = blobCategories;
+    memoryCache.categoriesSavedAt = Date.now();
+
+    return {
+      source: "vercel-blob",
+      categories: blobCategories,
+    };
+  }
+
+  return {
+    source: "empty-cache",
+    categories: [],
+  };
+}
+
 export async function healthCheck(req, res) {
   return res.json({
     ok: true,
@@ -96,92 +233,20 @@ export async function healthCheck(req, res) {
 
 export async function getProducts(req, res) {
   try {
-    const cachedProducts = await readJsonCache(cacheFiles.products, []);
+    const { source, products } = await getProductSource();
 
-    if (Array.isArray(cachedProducts) && cachedProducts.length > 0) {
-      let data = [...cachedProducts];
-
-      if (req.query.search) {
-        data = data.filter((product) =>
-          productMatchesSearch(product, req.query.search)
-        );
-      }
-
-      if (req.query.category) {
-        data = data.filter((product) =>
-          productMatchesCategory(product, req.query.category)
-        );
-      }
-
-      if (req.query.featured !== undefined) {
-        const featured = req.query.featured === "true";
-        data = data.filter((product) => Boolean(product.featured) === featured);
-      }
-
-      if (req.query.on_sale !== undefined) {
-        const onSale = req.query.on_sale === "true";
-        data = data.filter((product) => Boolean(product.onSale) === onSale);
-      }
-
-      data = sortCachedProducts(data, req);
-
-      const page = Number(req.query.page || 1);
-      const perPage = Number(req.query.per_page || req.query.limit || 100);
-      const start = (page - 1) * perPage;
-      const paginated = data.slice(start, start + perPage);
-
-      return res.json({
-        ok: true,
-        source: "local-cache",
-        data: paginated,
-        pagination: {
-          page,
-          per_page: perPage,
-          total: data.length,
-          totalPages: Math.ceil(data.length / perPage),
-        },
-      });
-    }
-
-    const { page, per_page } = getPagination(req);
-
-    const params = {
-      page,
-      per_page,
-      status: req.query.status || "publish",
-    };
-
-    if (req.query.search) params.search = req.query.search;
-    if (req.query.category) params.category = req.query.category;
-    if (req.query.slug) params.slug = req.query.slug;
-
-    if (req.query.featured !== undefined) {
-      params.featured = req.query.featured === "true";
-    }
-
-    if (req.query.on_sale !== undefined) {
-      params.on_sale = req.query.on_sale === "true";
-    }
-
-    if (req.query.orderby === "total_sales") {
-      params.orderby = "popularity";
-    } else if (req.query.orderby) {
-      params.orderby = req.query.orderby;
-    }
-
-    if (req.query.order) params.order = req.query.order;
-
-    const response = await wooClient.get("/products", { params });
+    const filtered = filterAndSortProducts(products, req);
+    const pagination = paginate(filtered, req);
 
     return res.json({
       ok: true,
-      source: "woocommerce-live",
-      data: response.data.map(normalizeWooProduct),
+      source,
+      data: pagination.data,
       pagination: {
-        page,
-        per_page,
-        total: Number(response.headers["x-wp-total"] || 0),
-        totalPages: Number(response.headers["x-wp-totalpages"] || 0),
+        page: pagination.page,
+        per_page: pagination.per_page,
+        total: pagination.total,
+        totalPages: pagination.totalPages,
       },
     });
   } catch (error) {
@@ -199,35 +264,9 @@ export async function getProducts(req, res) {
 export async function getProductBySlug(req, res) {
   try {
     const { slug } = req.params;
+    const { source, products } = await getProductSource();
 
-    const cachedProducts = await readJsonCache(cacheFiles.products, []);
-
-    if (Array.isArray(cachedProducts) && cachedProducts.length > 0) {
-      const product = cachedProducts.find((item) => item.slug === slug);
-
-      if (!product) {
-        return res.status(404).json({
-          ok: false,
-          message: "Product not found.",
-        });
-      }
-
-      return res.json({
-        ok: true,
-        source: "local-cache",
-        data: product,
-      });
-    }
-
-    const response = await wooClient.get("/products", {
-      params: {
-        slug,
-        status: "publish",
-        per_page: 1,
-      },
-    });
-
-    const product = response.data?.[0];
+    const product = products.find((item) => item.slug === slug);
 
     if (!product) {
       return res.status(404).json({
@@ -238,8 +277,8 @@ export async function getProductBySlug(req, res) {
 
     return res.json({
       ok: true,
-      source: "woocommerce-live",
-      data: normalizeWooProduct(product),
+      source,
+      data: product,
     });
   } catch (error) {
     const wooError = getWooError(error);
@@ -256,34 +295,21 @@ export async function getProductBySlug(req, res) {
 export async function getProductById(req, res) {
   try {
     const { id } = req.params;
+    const { source, products } = await getProductSource();
 
-    const cachedProducts = await readJsonCache(cacheFiles.products, []);
+    const product = products.find((item) => String(item.id) === String(id));
 
-    if (Array.isArray(cachedProducts) && cachedProducts.length > 0) {
-      const product = cachedProducts.find(
-        (item) => String(item.id) === String(id)
-      );
-
-      if (!product) {
-        return res.status(404).json({
-          ok: false,
-          message: "Product not found.",
-        });
-      }
-
-      return res.json({
-        ok: true,
-        source: "local-cache",
-        data: product,
+    if (!product) {
+      return res.status(404).json({
+        ok: false,
+        message: "Product not found.",
       });
     }
 
-    const response = await wooClient.get(`/products/${id}`);
-
     return res.json({
       ok: true,
-      source: "woocommerce-live",
-      data: normalizeWooProduct(response.data),
+      source,
+      data: product,
     });
   } catch (error) {
     const wooError = getWooError(error);
@@ -299,29 +325,12 @@ export async function getProductById(req, res) {
 
 export async function getCategories(req, res) {
   try {
-    const cachedCategories = await readJsonCache(cacheFiles.categories, []);
-
-    if (Array.isArray(cachedCategories) && cachedCategories.length > 0) {
-      return res.json({
-        ok: true,
-        source: "local-cache",
-        data: cachedCategories,
-      });
-    }
-
-    const response = await wooClient.get("/products/categories", {
-      params: {
-        per_page: req.query.per_page || 100,
-        hide_empty: req.query.hide_empty || false,
-        orderby: req.query.orderby || "name",
-        order: req.query.order || "asc",
-      },
-    });
+    const { source, categories } = await getCategorySource();
 
     return res.json({
       ok: true,
-      source: "woocommerce-live",
-      data: response.data.map(normalizeWooCategory),
+      source,
+      data: categories,
     });
   } catch (error) {
     const wooError = getWooError(error);

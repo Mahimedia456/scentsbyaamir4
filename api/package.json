@@ -9,6 +9,7 @@
     "start": "node src/index.js"
   },
   "dependencies": {
+    "@vercel/blob": "^2.4.0",
     "axios": "^1.16.1",
     "cors": "^2.8.6",
     "dotenv": "^16.6.1",

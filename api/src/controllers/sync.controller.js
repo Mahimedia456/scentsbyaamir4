@@ -3,25 +3,32 @@ import {
   normalizeWooProduct,
   wooClient,
 } from "../config/woocommerce.js";
-import { cacheFiles, readJsonCache, writeJsonCache } from "../utils/localCache.js";
+import { blobPaths, readBlobJson, writeBlobJson } from "../utils/blobCache.js";
 
-function checkSyncAuth(req, res) {
+function checkSyncAuth(req, res, { allowCron = false } = {}) {
   const expectedToken = process.env.SYNC_ADMIN_TOKEN;
+  const cronSecret = process.env.CRON_SECRET;
+
+  if (allowCron) {
+    const cronHeader = req.headers["authorization"];
+    const expectedCronHeader = cronSecret ? `Bearer ${cronSecret}` : "";
+
+    if (cronSecret && cronHeader === expectedCronHeader) {
+      return { ok: true };
+    }
+  }
 
   if (!expectedToken) {
     return {
       ok: false,
       response: res.status(500).json({
         ok: false,
-        message: "SYNC_ADMIN_TOKEN is missing in api/.env",
+        message: "SYNC_ADMIN_TOKEN is missing in environment variables.",
       }),
     };
   }
 
-  const token =
-    req.headers["x-sync-token"] ||
-    req.body?.token ||
-    req.query?.token;
+  const token = req.headers["x-sync-token"] || req.body?.token || req.query?.token;
 
   if (token !== expectedToken) {
     return {
@@ -95,18 +102,13 @@ export async function syncWooProducts(req, res) {
   try {
     const products = await fetchAllWooProducts();
 
-    const sortedProducts = products.sort((a, b) => {
-      const bDate = new Date(b.dateCreated || 0).getTime();
-      const aDate = new Date(a.dateCreated || 0).getTime();
-      return bDate - aDate;
-    });
-
-    await writeJsonCache(cacheFiles.products, sortedProducts);
+    await writeBlobJson(blobPaths.products, products);
 
     return res.json({
       ok: true,
-      message: "Products synced successfully.",
-      count: sortedProducts.length,
+      source: "vercel-blob",
+      message: "Products synced successfully to Vercel Blob.",
+      count: products.length,
       syncedAt: new Date().toISOString(),
     });
   } catch (error) {
@@ -127,11 +129,12 @@ export async function syncWooCategories(req, res) {
   try {
     const categories = await fetchAllWooCategories();
 
-    await writeJsonCache(cacheFiles.categories, categories);
+    await writeBlobJson(blobPaths.categories, categories);
 
     return res.json({
       ok: true,
-      message: "Categories synced successfully.",
+      source: "vercel-blob",
+      message: "Categories synced successfully to Vercel Blob.",
       count: categories.length,
       syncedAt: new Date().toISOString(),
     });
@@ -156,12 +159,15 @@ export async function syncWooAll(req, res) {
       fetchAllWooCategories(),
     ]);
 
-    await writeJsonCache(cacheFiles.products, products);
-    await writeJsonCache(cacheFiles.categories, categories);
+    await Promise.all([
+      writeBlobJson(blobPaths.products, products),
+      writeBlobJson(blobPaths.categories, categories),
+    ]);
 
     return res.json({
       ok: true,
-      message: "WooCommerce data synced successfully.",
+      source: "vercel-blob",
+      message: "WooCommerce data synced successfully to Vercel Blob.",
       data: {
         products: products.length,
         categories: categories.length,
@@ -179,12 +185,49 @@ export async function syncWooAll(req, res) {
   }
 }
 
+export async function syncWooAllCron(req, res) {
+  const auth = checkSyncAuth(req, res, { allowCron: true });
+  if (!auth.ok) return auth.response;
+
+  try {
+    const [products, categories] = await Promise.all([
+      fetchAllWooProducts(),
+      fetchAllWooCategories(),
+    ]);
+
+    await Promise.all([
+      writeBlobJson(blobPaths.products, products),
+      writeBlobJson(blobPaths.categories, categories),
+    ]);
+
+    return res.json({
+      ok: true,
+      source: "vercel-blob-cron",
+      message: "Cron sync completed successfully.",
+      data: {
+        products: products.length,
+        categories: categories.length,
+      },
+      syncedAt: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error("[syncWooAllCron]", error?.response?.data || error.message);
+
+    return res.status(error?.response?.status || 500).json({
+      ok: false,
+      message: "Cron sync failed.",
+      error: error?.response?.data || error.message,
+    });
+  }
+}
+
 export async function getSyncStatus(req, res) {
-  const products = await readJsonCache(cacheFiles.products, []);
-  const categories = await readJsonCache(cacheFiles.categories, []);
+  const products = await readBlobJson(blobPaths.products, []);
+  const categories = await readBlobJson(blobPaths.categories, []);
 
   return res.json({
     ok: true,
+    source: "vercel-blob",
     data: {
       products: Array.isArray(products) ? products.length : 0,
       categories: Array.isArray(categories) ? categories.length : 0,
