@@ -1,4 +1,4 @@
-import { del, list, put } from "@vercel/blob";
+import { del, get, put } from "@vercel/blob";
 
 const PRODUCTS_BLOB_PATH = "scents-cache/products.json";
 const CATEGORIES_BLOB_PATH = "scents-cache/categories.json";
@@ -15,16 +15,13 @@ export const blobPaths = {
 export async function readBlobJson(pathname, fallback = []) {
   try {
     if (!hasBlobToken()) {
+      console.warn("[readBlobJson] BLOB_READ_WRITE_TOKEN is missing.");
       return fallback;
     }
 
-    const result = await list({
-      prefix: pathname,
-      limit: 1,
+    const blob = await get(pathname, {
       token: process.env.BLOB_READ_WRITE_TOKEN,
     });
-
-    const blob = result.blobs.find((item) => item.pathname === pathname);
 
     if (!blob?.url) {
       return fallback;
@@ -32,9 +29,15 @@ export async function readBlobJson(pathname, fallback = []) {
 
     const response = await fetch(blob.url, {
       cache: "no-store",
+      headers: blob.downloadUrl
+        ? {}
+        : {
+            Authorization: `Bearer ${process.env.BLOB_READ_WRITE_TOKEN}`,
+          },
     });
 
     if (!response.ok) {
+      console.warn("[readBlobJson] Failed to fetch blob:", response.status);
       return fallback;
     }
 
@@ -55,15 +58,16 @@ export async function writeBlobJson(pathname, data) {
       token: process.env.BLOB_READ_WRITE_TOKEN,
     });
   } catch {
-    // Ignore missing blob delete errors.
+    // Ignore delete errors when file does not exist yet.
   }
 
   const body = JSON.stringify(data, null, 2);
 
   const blob = await put(pathname, body, {
-    access: "public",
+    access: "private",
     contentType: "application/json",
     token: process.env.BLOB_READ_WRITE_TOKEN,
+    allowOverwrite: true,
   });
 
   return blob;
